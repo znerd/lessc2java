@@ -36,9 +36,9 @@ The task supports some additional options:
 
    excludes - the files to exclude, even if they are matched by the includes;
 
-   ...and other parameters inherited from the MatchingTask, see:
+and other parameters inherited from the MatchingTask, see:
 
-      http://ant.apache.org/manual/dirtasks.html
+   http://ant.apache.org/manual/dirtasks.html
 
 If you want to file a bug report or a feature request, please do so here:
 
