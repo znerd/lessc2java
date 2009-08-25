@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="lesscss-ant-task" default="compile">
+
+	<target name="-init" description="Common initialization">
+		<property name="javac.deprecation"  value="true"   />
+		<property name="javac.compilerargs" value="-Xlint" />
+		<property name="javac.listfiles"    value="true"   />
+		<property name="javac.encoding"     value="utf-8" />
+		<property name="javac.targetvm"     value="1.5"   />
+		<property name="javac.debug"        value="true"  />
+		<property name="javac.optimize"     value="false" />
+		<property name="javac.sourcedir"    value="src" />
+		<property name="javac.targetdir"    value="build/classes" />
+	</target>
+
+	<target name="compile" depends="-init">
+		<mkdir dir="${javac.targetdir}" />
+
+		<javac encoding="${javac.encoding}"
+		        destdir="${javac.targetdir}"
+		          debug="${javac.debug}"
+		    deprecation="${javac.deprecation}"
+		       optimize="${javac.optimize}"
+		         target="${javac.targetvm}"
+		      listfiles="${javac.listfiles}">
+			<compilerarg value="${javac.compilerargs}" />
+			<src path="src" />
+		</javac>
+	</target>
+</project>
