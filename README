@@ -1,0 +1,50 @@
+This is lesscss-ant-task, an Apache Ant task for converting LessCSS files to
+regular CSS files.
+
+For more information about LessCSS, see:
+
+   http://lesscss.org/
+
+This Ant task supports 2 distinct LessCSS interpreters:
+
+   1. 'lessc'  - The official interpreter from http://lesscss.org/.
+                 Ruby-based, performance is moderate.
+
+   2. 'plessc' - LessPHP, an alternative implementation from
+                 http://leafo.net/lessphp/
+                 PHP-based, performance is good.
+
+This software is available under the terms of a BSD-style license, see
+the accompanied LICENSE file.
+
+Example usage of the task in an Ant build file:
+
+   <taskdef name="lesscss" classname="com.pensioenpage.jynx.LesscssTask" />
+   <lesscss dir="src/htdocs" todir="build/htdocs" />
+
+The task supports some additional options:
+
+   command - the command to execute, by default the task uses 'lessc', but
+             in the future it may become more intelligent and possibly find
+             'plessc' as well, possibly even preferring that over 'lessc';
+
+   timeOut - the time-out in milliseconds for executing a single command,
+             defaults to 60000 (meaning 60 seconds);
+
+   includes - the files in the source directory to include, defaults to
+              '*.less';
+
+   excludes - the files to exclude, even if they are matched by the includes;
+
+   ...and other parameters inherited from the MatchingTask, see:
+
+      http://ant.apache.org/manual/dirtasks.html
+
+If you want to file a bug report or a feature request, please do so here:
+
+   http://github.com/znerd/lesscss-ant-task/issues
+
+This software has been developed by:
+
+   Ernst de Haan      -  ernst@pensioenpage.com
+   PensioenPage B.V.  -  https://www.pensioenpage.com/
