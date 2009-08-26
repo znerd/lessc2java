@@ -1,5 +1,5 @@
 This is lesscss-ant-task, an Apache Ant task for converting LessCSS files to
-regular CSS files. The current stable version is: 0.2 (August 26, 2009).
+regular CSS files. The current stable version is: 0.3 (August 26, 2009).
 
 For more information about LessCSS, see:
 
@@ -11,8 +11,6 @@ This Ant task has been tested with the following combination of software:
    - Ant 1.7.1
    - lessc 1.1.13
    - plessc 0.1.6
-
-NOTE: Since version 0.2, this task works with an unmodified lessc 1.1.13.
 
 This Ant task supports 2 distinct LessCSS interpreters:
 
