@@ -40,6 +40,9 @@ and other parameters inherited from the MatchingTask, see:
 
    http://ant.apache.org/manual/dirtasks.html
 
+In its current form, this software works with Java 1.5 and Ant 1.7.1, but
+it may also work on other versions, possibly after some small changes.
+ 
 If you want to file a bug report or a feature request, please do so here:
 
    http://github.com/znerd/lesscss-ant-task/issues
