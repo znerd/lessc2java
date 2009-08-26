@@ -19,6 +19,38 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
  * An Apache Ant task for running Lesscss on a number of files, to convert
  * them from <code>.less</code>- to <code>.css</code>-format.
  *
+ * <p>The most notable parameters supported by this task are:
+ *
+ * <dl>
+ * <dt>command
+ * <dd>The name of the command to execute.
+ *     Optional, defaults to <code>lessc</code>.
+ *
+ * <dt>timeOut
+ * <dd>The time-out for each individual invocation of the command, in
+ *     milliseconds. Optional, defaults to 60000 (60 seconds).
+ *
+ * <dt>dir
+ * <dd>The source directory to read from.
+ *     Optional, defaults to the project base directory.
+ *
+ * <dt>includes
+ * <dd>The files to match in the source directory.
+ *     Optional, defaults to <code>*.less</code>.
+ *
+ * <dt>excludes
+ * <dd>The files to exclude, even if they are matched by the include filter.
+ *     Optional, default is empty.
+ *
+ * <dt>toDir
+ * <dd>The target directory to write to.
+ *     Optional, defaults to the source directory.
+ * </dl>
+ *
+ * <p>This task supports more parameters and contained elements, inherited
+ * from {@link MatchingTask}. For more information, see
+ * <a href="http://ant.apache.org/manual/dirtasks.html">the Ant site</a>.
+ *
  * @version $Revision: 10190 $ $Date: 2009-08-25 17:49:35 +0200 (di, 25 aug 2009) $
  * @author <a href="mailto:ernst@pensioenpage.com">Ernst de Haan</a>
  */
@@ -225,6 +257,11 @@ public final class LesscssTask extends MatchingTask {
 
    @Override
    public void execute() throws BuildException {
+
+      // Source directory defaults to current directory
+      if (_sourceDir == null) {
+         _sourceDir = getProject().getBaseDir();
+      }
 
       // Destination directory defaults to source directory
       if (_destDir == null) {

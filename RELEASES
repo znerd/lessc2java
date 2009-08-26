@@ -1,3 +1,8 @@
+---- VERSION 0.4 (August 26, 2009) -------------------------------------------
+
+- Default source directory is project base directory.
+
+
 ---- VERSION 0.3 (August 26, 2009) -------------------------------------------
 
 - Supporting lessc 1.1.13 properly, by considering any stdout output to
