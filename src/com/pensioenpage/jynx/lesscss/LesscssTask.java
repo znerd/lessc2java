@@ -60,6 +60,21 @@ public final class LesscssTask extends MatchingTask {
    }
 
    /**
+    * Checks if the specified string is either null or empty (after trimming
+    * the whitespace off).
+    *
+    * @param s
+    *    the string to check.
+    *
+    * @return
+    *    <code>true</code> if <code>s == null || s.trim().length() &lt; 1</code>;
+    *    <code>false</code> otherwise.
+    */
+   private static final boolean isEmpty(String s) {
+      return s == null || s.trim().length() < 1;
+   }
+
+   /**
     * Checks if the specified abstract path name refers to an existing
     * directory.
     *
@@ -93,7 +108,7 @@ public final class LesscssTask extends MatchingTask {
    throws IllegalArgumentException, BuildException {
 
       // Check preconditions
-      if (description == null || description.length() < 1) {
+      if (isEmpty(description)) {
          throw new IllegalArgumentException("description is empty (" + quote(description) + ')');
       }
 
@@ -189,8 +204,7 @@ public final class LesscssTask extends MatchingTask {
     * @param command
     *    the command to use, e.g. <code>"/usr/local/bin/lessc"</code> or
     *    <code>jjlessc</code>;
-    *    can be <code>null</code> (in which case the task will find the
-    *    command).
+    *    can be <code>null</code> (in which case the task will find the command).
     */
    public void setCommand(String command) {
       _command = command;
@@ -302,14 +316,11 @@ public final class LesscssTask extends MatchingTask {
             failure = true;
          }
 
-         // Output to stderr also indicates a failure
-         if (! failure) {
-            String errString = buffer.getErrString();
-            if (errString != null && errString.trim().length() > 0) {
-               failure = true;
-            }
-         }
-
+         // Output to stderr or stdout indicates a failure
+         String errorOutput = buffer.getErrString();
+         errorOutput        = isEmpty(errorOutput) ? buffer.getOutString() : errorOutput;
+         failure            = failure ? true : ! isEmpty(errorOutput);
+         
          // Create the output file if the command just sent everything to
          // standard out
          if (createOutputFile) {
@@ -323,7 +334,13 @@ public final class LesscssTask extends MatchingTask {
          // Log the result for this individual file
          long thisDuration = System.currentTimeMillis() - thisStart;
          if (failure) {
-            log("Failed to transform " + quote(inFilePath) + '.');
+            String logMessage = "Failed to transform " + quote(inFilePath);
+            if (isEmpty(errorOutput)) {
+               logMessage += '.';
+            } else {
+               logMessage += ':' + System.getProperty("line.separator") + errorOutput;
+            }
+            log(logMessage);
             failedCount++;
          } else {
             log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
