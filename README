@@ -17,6 +17,15 @@ This Ant task supports 2 distinct LessCSS interpreters:
 This software is available under the terms of a BSD-style license, see
 the accompanied LICENSE file.
 
+This task comes as a collection of Java source files that can be built with Ant.
+Just run:
+
+   ant
+
+The result will be a JAR file:
+
+   build/lesscss-ant-task.jar
+
 Example usage of the task in an Ant build file:
 
    <taskdef name="lesscss" classname="com.pensioenpage.jynx.lesscss.LesscssTask" />
