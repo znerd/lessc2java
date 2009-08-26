@@ -5,6 +5,21 @@ For more information about LessCSS, see:
 
    http://lesscss.org/
 
+This Ant task has been tested with the following combination of software:
+
+   - J2SE 1.5 and Java SE 6
+   - Ant 1.7.1
+   - lessc 1.1.13
+   - plessc 0.1.6
+
+NOTE: For lessc 1.1.13 to work with this task, modify the command.rb file that
+      comes with it, and add:
+
+         exit 1
+
+      at the very end of the err() function (at the bottom of the file). This
+      allows the Ant task to detect that the transformation failed.
+
 This Ant task supports 2 distinct LessCSS interpreters:
 
    1. 'lessc'  - The official interpreter from http://lesscss.org/.
@@ -49,9 +64,6 @@ and other parameters inherited from the MatchingTask, see:
 
    http://ant.apache.org/manual/dirtasks.html
 
-In its current form, this software works with Java 1.5 and Ant 1.7.1, but
-it may also work on other versions, possibly after some small changes.
- 
 If you want to file a bug report or a feature request, please do so here:
 
    http://github.com/znerd/lesscss-ant-task/issues
