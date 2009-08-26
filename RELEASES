@@ -1,0 +1,9 @@
+---- VERSION 0.2 (August 26, 2009) -------------------------------------------
+
+- Supporting lessc 1.1.13 without the need to change the command.rb file
+  inside lessc. Detecting an error by looking at the stderr output.
+
+
+---- VERSION 0.1 (August 26, 2009) -------------------------------------------
+
+Initial release.
