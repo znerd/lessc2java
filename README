@@ -12,13 +12,7 @@ This Ant task has been tested with the following combination of software:
    - lessc 1.1.13
    - plessc 0.1.6
 
-NOTE: For lessc 1.1.13 to work with this task, modify the command.rb file that
-      comes with it, and add:
-
-         exit 1
-
-      at the very end of the err() function (at the bottom of the file). This
-      allows the Ant task to detect that the transformation failed.
+NOTE: Since version 0.2, this task works with an unmodified lessc 1.1.13.
 
 This Ant task supports 2 distinct LessCSS interpreters:
 
