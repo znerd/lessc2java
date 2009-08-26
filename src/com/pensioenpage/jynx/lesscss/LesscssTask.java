@@ -302,6 +302,14 @@ public final class LesscssTask extends MatchingTask {
             failure = true;
          }
 
+         // Output to stderr also indicates a failure
+         if (! failure) {
+            String errString = buffer.getErrString();
+            if (errString != null && errString.trim().length() > 0) {
+               failure = true;
+            }
+         }
+
          // Create the output file if the command just sent everything to
          // standard out
          if (createOutputFile) {
