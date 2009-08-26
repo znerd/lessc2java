@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="lesscss-ant-task" default="compile">
+<project name="lesscss-ant-task" default="jar">
 
 	<target name="-init" description="Common initialization">
-		<property name="javac.deprecation"  value="true"   />
-		<property name="javac.compilerargs" value="-Xlint" />
-		<property name="javac.listfiles"    value="true"   />
-		<property name="javac.encoding"     value="utf-8" />
-		<property name="javac.targetvm"     value="1.5"   />
-		<property name="javac.debug"        value="true"  />
-		<property name="javac.optimize"     value="false" />
-		<property name="javac.sourcedir"    value="src" />
-		<property name="javac.targetdir"    value="build/classes" />
+		<property name="outputdir"           value="build" />
+		<property name="javac.deprecation"   value="true"   />
+		<property name="javac.compilerargs"  value="-Xlint" />
+		<property name="javac.listfiles"     value="true"   />
+		<property name="javac.encoding"      value="utf-8" />
+		<property name="javac.targetvm"      value="1.5"   />
+		<property name="javac.debug"         value="true"  />
+		<property name="javac.optimize"      value="false" />
+		<property name="javac.sourcedir"     value="src" />
+		<property name="javac.targetdir"     value="${outputdir}/classes" />
+		<property name="jar.filename"        value="${outputdir}/${ant.project.name}.jar" />
+		<property name="project.description" value="LessCSS Ant task" />
+		<property name="project.version"     value="0.1" />
+		<property name="project.vendor"      value="PensioenPage B.V." />
 	</target>
 
 	<target name="compile" depends="-init">
@@ -27,5 +32,22 @@
 			<compilerarg value="${javac.compilerargs}" />
 			<src path="src" />
 		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar jarfile="${jar.filename}" basedir="${javac.targetdir}">
+			<manifest>
+				<attribute name="Specification-Title"   value="${project.description}"/>
+				<attribute name="Specification-Version" value="${project.version}"/>
+				<attribute name="Specification-Vendor"  value="${project.vendor}"/>
+				<attribute name="Implementation-Title"   value="${project.description}"/>
+				<attribute name="Implementation-Version" value="${project.version}"/>
+				<attribute name="Implementation-Vendor"  value="${project.vendor}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean" depends="-init">
+		<delete dir="${outputdir}" />
 	</target>
 </project>

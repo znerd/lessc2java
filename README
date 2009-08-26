@@ -19,7 +19,7 @@ the accompanied LICENSE file.
 
 Example usage of the task in an Ant build file:
 
-   <taskdef name="lesscss" classname="com.pensioenpage.jynx.LesscssTask" />
+   <taskdef name="lesscss" classname="com.pensioenpage.jynx.lesscss.LesscssTask" />
    <lesscss dir="src/htdocs" todir="build/htdocs" />
 
 The task supports some additional options:
