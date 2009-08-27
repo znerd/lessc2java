@@ -43,12 +43,18 @@ Example usage of the task in an Ant build file:
 
 Although all parameters are optional, the task supports various:
 
-   command - the command to execute, by default the task uses 'lessc', but
-             in the future it may become more intelligent and possibly find
-             'plessc' as well, possibly even preferring that over 'lessc';
+   dir      - the source directory, to read LessCSS files from, defaults to
+              the project base directory;
 
-   timeOut - the time-out in milliseconds for executing a single command,
-             defaults to 60000 (meaning 60 seconds);
+   todir    - the destination directory, to write the generated CSS files to,
+              defaults to the source directory;
+
+   command  - the command to execute, by default the task uses 'lessc', but
+              in the future it may become more intelligent and possibly find
+              'plessc' as well, possibly even preferring that over 'lessc';
+
+   timeOut  - the time-out in milliseconds for executing a single command,
+              defaults to 60000 (meaning 60 seconds);
 
    includes - the files in the source directory to include, defaults to
               '*.less';
