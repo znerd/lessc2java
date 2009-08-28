@@ -18,7 +18,7 @@
 		<property name="project.vendor"      value="PensioenPage B.V." />
 		<loadfile property="project.version" srcfile="VERSION">
 			<filterchain>
-				<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks" />
+				<striplinebreaks/>
 			</filterchain>
 		</loadfile>
 
