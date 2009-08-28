@@ -16,7 +16,13 @@
 		<property name="jar.filename"        value="${outputdir}/${ant.project.name}.jar" />
 		<property name="project.description" value="LessCSS Ant task" />
 		<property name="project.vendor"      value="PensioenPage B.V." />
-		<loadfile property="project.version" srcfile="VERSION" />
+		<loadfile property="project.version" srcfile="VERSION">
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks" />
+			</filterchain>
+		</loadfile>
+
+		<echo level="verbose" message="${ant.project.name} (&quot;${project.description}&quot;) version ${project.version}" />
 	</target>
 
 	<target name="compile" depends="-init">
