@@ -15,8 +15,8 @@
 		<property name="javac.targetdir"     value="${outputdir}/classes" />
 		<property name="jar.filename"        value="${outputdir}/${ant.project.name}.jar" />
 		<property name="project.description" value="LessCSS Ant task" />
-		<property name="project.version"     value="0.4" />
 		<property name="project.vendor"      value="PensioenPage B.V." />
+		<loadfile property="project.version" srcfile="VERSION" />
 	</target>
 
 	<target name="compile" depends="-init">
