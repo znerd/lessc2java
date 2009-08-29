@@ -22,7 +22,7 @@
 			</filterchain>
 		</loadfile>
 
-		<echo level="verbose" message="${ant.project.name} (&quot;${project.description}&quot;) version ${project.version}" />
+		<echo level="verbose" message="Project: ${ant.project.name} (&quot;${project.description}&quot;) version ${project.version}" />
 	</target>
 
 	<target name="compile" depends="-init">
