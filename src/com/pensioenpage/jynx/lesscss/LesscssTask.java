@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
+import static org.apache.tools.ant.Project.MSG_ERR;
 import static org.apache.tools.ant.Project.MSG_VERBOSE;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
@@ -34,6 +35,10 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
  * <dd>The source directory to read from.
  *     Optional, defaults to the project base directory.
  *
+ * <dt>toDir
+ * <dd>The target directory to write to.
+ *     Optional, defaults to the source directory.
+ *
  * <dt>includes
  * <dd>The files to match in the source directory.
  *     Optional, defaults to <code>*.less</code>.
@@ -41,10 +46,6 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
  * <dt>excludes
  * <dd>The files to exclude, even if they are matched by the include filter.
  *     Optional, default is empty.
- *
- * <dt>toDir
- * <dd>The target directory to write to.
- *     Optional, defaults to the source directory.
  * </dl>
  *
  * <p>This task supports more parameters and contained elements, inherited
@@ -377,7 +378,7 @@ public final class LesscssTask extends MatchingTask {
             } else {
                logMessage += ':' + System.getProperty("line.separator") + errorOutput;
             }
-            log(logMessage);
+            log(logMessage, MSG_ERR);
             failedCount++;
          } else {
             log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
