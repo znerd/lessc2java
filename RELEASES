@@ -1,6 +1,7 @@
 ---- VERSION 0.5 -------------------------------------------------------------
 
 - Added unit test.
+- Parameter 'includes' now works correctly.
 
 
 ---- VERSION 0.4 (August 26, 2009) -------------------------------------------

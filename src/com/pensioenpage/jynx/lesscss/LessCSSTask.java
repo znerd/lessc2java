@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -41,7 +43,7 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
  *
  * <dt>includes
  * <dd>The files to match in the source directory.
- *     Optional, defaults to <code>*.less</code>.
+ *     Optional, defaults to all files.
  *
  * <dt>excludes
  * <dd>The files to exclude, even if they are matched by the include filter.
@@ -90,6 +92,48 @@ public final class LessCSSTask extends MatchingTask {
     */
    private static final String quote(String s) {
       return s == null ? "(null)" : "\"" + s + '"';
+   }
+
+   /**
+    * Determines if the specified character string matches the regular
+    * expression.
+    *
+    * @param s
+    *    the string to research, or <code>null</code>.
+    *
+    * @param regex
+    *    the regular expression, cannot be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if <code>s</em> matches the regular expression;
+    *    <code>false</code> if it does not.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>regex == null</code> or if it has an invalid syntax. 
+    */
+   private static final boolean matches(String s, String regex)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (regex == null) {
+         throw new IllegalArgumentException("regex == null");
+      }
+
+      // Compile the regular expression pattern
+      Pattern pattern;
+      try {
+         pattern = Pattern.compile(regex);
+      } catch (PatternSyntaxException cause) {
+         throw new IllegalArgumentException("Invalid regular expression \"" + regex + "\".", cause);
+      }
+
+      // Short-circuit if the string is null
+      if (s == null) {
+         return false;
+      }
+
+      // Find a match
+      return pattern.matcher(s).find();
    }
 
    /**
@@ -172,7 +216,7 @@ public final class LessCSSTask extends MatchingTask {
     * Constructs a new <code>LessCSSTask</code> object.
     */
    public LessCSSTask() {
-      setIncludes("*.less");
+      // empty
    }
 
 
@@ -320,6 +364,13 @@ public final class LessCSSTask extends MatchingTask {
             continue;
          }
 
+         // Determine if the file type is supported
+         if (! matches(inFileName.toLowerCase(), "\\.less$")) {
+            log("Skipping " + quote(inFileName) + " because the file does not end in \".less\" (case-insensitive).", MSG_VERBOSE);
+            skippedCount++;
+            continue;
+         }
+
          // Some preparations related to the input file and output file
          long     thisStart = System.currentTimeMillis();
          String outFileName = inFile.getName().replaceFirst("\\.less$", ".css");
@@ -391,7 +442,7 @@ public final class LessCSSTask extends MatchingTask {
       if (failedCount > 0) {
          throw new BuildException("" + failedCount + " file(s) failed to transform, while " + successCount + " succeeded. Total duration is " + duration + " ms.");
       } else {
-         log("" + successCount + " file(s) transformed in " + duration + " ms; " + skippedCount + " unmodified file(s) skipped.");
+         log("" + successCount + " file(s) transformed in " + duration + " ms; " + skippedCount + " file(s) skipped.");
       }
    }
 }
