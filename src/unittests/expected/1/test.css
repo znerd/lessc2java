@@ -1,0 +1,5 @@
+.a {
+  font-size: 12px;
+  font-weight: bold;
+}
+li > p > a:hover { text-decoration: underline; }
