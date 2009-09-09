@@ -17,8 +17,8 @@ import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
 import org.apache.tools.ant.taskdefs.MatchingTask;
 
 /**
- * An Apache Ant task for running Lesscss on a number of files, to convert
- * them from <code>.less</code>- to <code>.css</code>-format.
+ * An Apache Ant task for running a LessCSS compiler on a number of files, to
+ * convert them from <code>.less</code>- to <code>.css</code>-format.
  *
  * <p>The most notable parameters supported by this task are:
  *
@@ -55,7 +55,7 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
  * @version $Revision: 10190 $ $Date: 2009-08-25 17:49:35 +0200 (di, 25 aug 2009) $
  * @author <a href="mailto:ernst@pensioenpage.com">Ernst de Haan</a>
  */
-public final class LesscssTask extends MatchingTask {
+public final class LessCSSTask extends MatchingTask {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -169,9 +169,9 @@ public final class LesscssTask extends MatchingTask {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>LesscssTask</code> object.
+    * Constructs a new <code>LessCSSTask</code> object.
     */
-   public LesscssTask() {
+   public LessCSSTask() {
       setIncludes("*.less");
    }
 

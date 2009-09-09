@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="lesscss-ant-task" default="jar">
+<project name="lesscss-ant-task" default="all">
 
 	<target name="-init" description="Common initialization">
+		<property name="sourcedir"           value="src" />
 		<property name="outputdir"           value="build" />
 		<property name="javac.deprecation"   value="true"   />
 		<property name="javac.compilerargs"  value="-Xlint" />
@@ -11,8 +12,9 @@
 		<property name="javac.targetvm"      value="1.5"   />
 		<property name="javac.debug"         value="true"  />
 		<property name="javac.optimize"      value="false" />
-		<property name="javac.sourcedir"     value="src" />
-		<property name="javac.targetdir"     value="${outputdir}/classes" />
+		<property name="javac.sourcedir"     value="${sourcedir}" />
+		<property name="javac.outputdir"     value="${outputdir}/classes" />
+		<property name="javac.includes"      value="**/*.java" />
 		<property name="jar.filename"        value="${outputdir}/${ant.project.name}.jar" />
 		<property name="project.description" value="LessCSS Ant task" />
 		<property name="project.vendor"      value="PensioenPage B.V." />
@@ -21,15 +23,18 @@
 				<striplinebreaks/>
 			</filterchain>
 		</loadfile>
+		<property name="unittests.sourcedir"   value="${sourcedir}/unittests/input"    />
+		<property name="unittests.expecteddir" value="${sourcedir}/unittests/expected" />
+		<property name="unittests.outputdir"   value="${outputdir}/unittests"          />
 
 		<echo level="verbose" message="Project: ${ant.project.name} (&quot;${project.description}&quot;) version ${project.version}" />
 	</target>
 
 	<target name="compile" depends="-init">
-		<mkdir dir="${javac.targetdir}" />
+		<mkdir dir="${javac.outputdir}" />
 
 		<javac encoding="${javac.encoding}"
-		        destdir="${javac.targetdir}"
+		        destdir="${javac.outputdir}"
 		          debug="${javac.debug}"
 		    deprecation="${javac.deprecation}"
 		       optimize="${javac.optimize}"
@@ -40,8 +45,35 @@
 		</javac>
 	</target>
 
+	<target name="unittests" depends="compile" description="Runs all available unit tests">
+
+		<taskdef name="lesscss" classname="com.pensioenpage.jynx.lesscss.LessCSSTask" classpath="${javac.outputdir}" />
+
+		<mkdir dir="${unittests.outputdir}" />
+
+		<macrodef name="unittest">
+			<attribute name="testnum" />
+			<attribute name="inputdir"    default="${unittests.sourcedir}/@{testnum}"   />
+			<attribute name="outputdir"   default="${unittests.outputdir}/@{testnum}"   />
+			<attribute name="expecteddir" default="${unittests.expecteddir}/@{testnum}" />
+			<attribute name="actual"      default="@{outputdir}/test.css"               />
+			<attribute name="expected"    default="@{expecteddir}/test.css"             />
+
+			<sequential>
+				<mkdir dir="@{outputdir}" />
+				<lesscss dir="@{inputdir}" includes="test.less" todir="@{outputdir}" />
+				<condition property="test@{testnum}.success">
+					<filesmatch file1="@{expected}" file2="@{actual}" />
+				</condition>
+				<fail unless="test@{testnum}.success">Output file "@{actual}" differs from what was expected: "@{expected}".</fail>
+			</sequential>
+		</macrodef>
+
+		<unittest testnum="1" />
+	</target>
+
 	<target name="jar" depends="compile">
-		<jar jarfile="${jar.filename}" basedir="${javac.targetdir}">
+		<jar jarfile="${jar.filename}" basedir="${javac.outputdir}">
 			<manifest>
 				<attribute name="Specification-Title"   value="${project.description}"/>
 				<attribute name="Specification-Version" value="${project.version}"/>
@@ -52,6 +84,8 @@
 			</manifest>
 		</jar>
 	</target>
+
+	<target name="all" depends="compile,unittests,jar" description="Compiles, runs all unit tests and builds the JAR" />
 
 	<target name="clean" depends="-init">
 		<delete dir="${outputdir}" />
