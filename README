@@ -8,7 +8,7 @@ For more information about LessCSS, see:
 This Ant task has been tested with the following combination of software:
 
    - J2SE 5.0 and Java SE 6 (source code uses Java 5.0-features)
-   - Ant 1.7.1
+   - Ant 1.7.1 and 1.8.1
    - lessc 1.1.13
    - plessc 0.1.6
 
