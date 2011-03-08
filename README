@@ -9,8 +9,9 @@ This Ant task has been tested with the following combination of software:
 
    - J2SE 5.0 and Java SE 6 (source code uses Java 5.0-features)
    - Ant 1.7.1 and 1.8.1
-   - lessc 1.1.13
+   - lessc 1.1.13 and 1.2.21
    - plessc 0.1.6
+   - less.js 1.0.40
 
 This Ant task supports 2 distinct LessCSS interpreters:
 
@@ -20,6 +21,10 @@ This Ant task supports 2 distinct LessCSS interpreters:
    2. 'plessc' - LessPHP, an alternative implementation from
                  http://leafo.net/lessphp/
                  PHP-based, performance is good.
+
+   3. 'lessc'  - A node.js-based implementation, from
+                 https://github.com/cloudhead/less.js
+                 JavaScript-based.
 
 This software is available under the terms of a BSD-style license, see
 the accompanied LICENSE file.
@@ -71,5 +76,5 @@ If you want to file a bug report or a feature request, please do so here:
 
 This software has been developed by:
 
-   Ernst de Haan      -  ernst@pensioenpage.com
-   PensioenPage B.V.  -  https://www.pensioenpage.com/
+   Ernst de Haan
+   ernst@ernstdehaan.com
