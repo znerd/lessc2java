@@ -66,6 +66,9 @@ Although all parameters are optional, the task supports various:
 
    excludes - the files to exclude, even if they are matched by the includes;
 
+   overwrite - if set to 'true', then existing files are always overwritten,
+               even if they are newer.
+
 and other parameters inherited from the MatchingTask, see:
 
    http://ant.apache.org/manual/dirtasks.html
@@ -78,3 +81,4 @@ This software has been developed by:
 
    Ernst de Haan
    ernst@ernstdehaan.com
+   twitter: @ernstdehaan

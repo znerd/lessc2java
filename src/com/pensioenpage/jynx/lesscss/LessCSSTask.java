@@ -48,6 +48,9 @@ import org.apache.tools.ant.taskdefs.MatchingTask;
  * <dt>excludes
  * <dd>The files to exclude, even if they are matched by the include filter.
  *     Optional, default is empty.
+ *
+ * <dt>overwrite
+ * <dd>When set, even newer files will be overwritten.
  * </dl>
  *
  * <p>This task supports more parameters and contained elements, inherited
@@ -248,6 +251,8 @@ public final class LessCSSTask extends MatchingTask {
     */
    private long _timeOut;
 
+   private boolean _overwrite;
+
    
    //-------------------------------------------------------------------------
    // Methods
@@ -298,6 +303,10 @@ public final class LessCSSTask extends MatchingTask {
     */
    public void setTimeOut(long timeOut) {
       _timeOut = timeOut;
+   }
+
+   public void setOverwrite(boolean overwrite) {
+      _overwrite = true;
    }
 
    @Override
@@ -378,11 +387,14 @@ public final class LessCSSTask extends MatchingTask {
          String outFilePath = outFile.getPath();
          String  inFilePath = inFile.getPath();
 
-         // Skip this file is the output file exists and is newer
-         if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
-            log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE); 
-            skippedCount++;
-            continue;
+         if (! _overwrite) {
+
+            // Skip this file is the output file exists and is newer
+            if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
+               log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE); 
+               skippedCount++;
+               continue;
+            }
          }
 
          // Prepare for the command execution
