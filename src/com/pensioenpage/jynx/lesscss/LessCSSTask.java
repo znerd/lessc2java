@@ -219,7 +219,8 @@ public final class LessCSSTask extends MatchingTask {
     * Constructs a new <code>LessCSSTask</code> object.
     */
    public LessCSSTask() {
-      // empty
+      // default includes
+	  this.setIncludes("*.less");
    }
 
 
@@ -377,13 +378,6 @@ public final class LessCSSTask extends MatchingTask {
          // Make sure the input file exists
          File inFile = new File(_sourceDir, inFileName);
          if (! inFile.exists()) {
-            continue;
-         }
-
-         // Determine if the file type is supported
-         if (! matches(inFileName.toLowerCase(), "\\.less$")) {
-            log("Skipping " + quote(inFileName) + " because the file does not end in \".less\" (case-insensitive).", MSG_VERBOSE);
-            skippedCount++;
             continue;
          }
 
