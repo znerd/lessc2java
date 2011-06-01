@@ -112,7 +112,7 @@ public final class LessCSSTask extends MatchingTask {
     *    <code>false</code> if it does not.
     *
     * @throws IllegalArgumentException
-    *    if <code>regex == null</code> or if it has an invalid syntax. 
+    *    if <code>regex == null</code> or if it has an invalid syntax.
     */
    private static final boolean matches(String s, String regex)
    throws IllegalArgumentException {
@@ -253,7 +253,7 @@ public final class LessCSSTask extends MatchingTask {
 
    private boolean _overwrite;
 
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -358,8 +358,15 @@ public final class LessCSSTask extends MatchingTask {
       }
       log("Using command " + quote(command) + ", version is " + quote(versionString) + '.', MSG_VERBOSE);
 
-      // TODO: Improve this, detect kind of command
-      boolean createOutputFile = command.indexOf("plessc") >= 0;
+      boolean redirectOutputToFile = false;
+
+	  /*
+	   * all known parsers supports output to file
+	   * @todo add conditions for parser which doesn't support output to file
+	   */
+//	  if (command.indexOf("plessc") >= 0) {
+//		  redirectOutputToFile = false;
+//	  }
 
       // Preparations done, consider each individual file for processing
       log("Transforming from " + _sourceDir.getPath() + " to " + _destDir.getPath() + '.', MSG_VERBOSE);
@@ -391,7 +398,7 @@ public final class LessCSSTask extends MatchingTask {
 
             // Skip this file is the output file exists and is newer
             if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
-               log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE); 
+               log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE);
                skippedCount++;
                continue;
             }
@@ -401,7 +408,7 @@ public final class LessCSSTask extends MatchingTask {
          buffer   = new Buffer();
          watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
          execute  = new Execute(buffer, watchdog);
-         cmdline  = createOutputFile
+         cmdline  = redirectOutputToFile
                   ? new String[] { command, inFilePath }
                   : new String[] { command, inFilePath, outFilePath };
 
@@ -421,10 +428,10 @@ public final class LessCSSTask extends MatchingTask {
          String errorOutput = buffer.getErrString();
          errorOutput        = isEmpty(errorOutput) ? buffer.getOutString() : errorOutput;
          failure            = failure ? true : ! isEmpty(errorOutput);
-         
+
          // Create the output file if the command just sent everything to
          // standard out
-         if (createOutputFile) {
+         if (redirectOutputToFile) {
             try {
                buffer.writeOutTo(new FileOutputStream(outFile));
             } catch (IOException cause) {
