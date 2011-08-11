@@ -7,6 +7,7 @@
   <name>LessCSS for Java (complete)</name>
 
   <properties>
+		<maven.version>3.0.3</maven.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
