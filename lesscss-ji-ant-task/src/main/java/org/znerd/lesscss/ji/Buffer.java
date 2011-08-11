@@ -12,7 +12,7 @@ import org.apache.tools.ant.taskdefs.StreamPumper;
 /**
  * An <code>ExecuteStreamHandler</code> implementation that stores all output in a buffer.
  */
-class Buffer extends Object implements ExecuteStreamHandler {
+public class Buffer extends Object implements ExecuteStreamHandler {
 
     // TODO: Add state checking
 
