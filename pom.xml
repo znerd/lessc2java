@@ -4,7 +4,7 @@
   <artifactId>lesscss4j</artifactId>
   <packaging>pom</packaging>
   <version>0.7-SNAPSHOT</version>
-  <name>LessCSS for Java (complete)</name>
+  <name>LessCSS Java Integration (complete)</name>
 
   <properties>
 		<maven.version>3.0.3</maven.version>
@@ -13,9 +13,9 @@
   </properties>
 
   <modules>
-    <module>lesscss4j-core</module>
-    <module>lesscss4j-ant-task</module>
-    <module>lesscss4j-maven-plugin</module>
+    <module>lesscss-ji-core</module>
+    <module>lesscss-ji-ant-task</module>
+    <module>lesscss-ji-maven-plugin</module>
   </modules>
 
   <dependencyManagement>

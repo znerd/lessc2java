@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.znerd</groupId>
-	<artifactId>lesscss4j-ant-task</artifactId>
+	<artifactId>lesscss-ji-ant-task</artifactId>
 	<packaging>jar</packaging>
 	<name>LessCSS4J Ant Task</name>
 
 	<parent>
 		<groupId>org.znerd</groupId>
-		<artifactId>lesscss4j</artifactId>
+		<artifactId>lesscss-ji</artifactId>
 		<version>0.7-SNAPSHOT</version>
 	</parent>
 

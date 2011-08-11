@@ -1,4 +1,4 @@
-This is lesscss4j, which allows Java builds to convert LessCSS files to
+This is lesscss-ji, which allows Java builds to convert LessCSS files to
 regular CSS files. Both Apache Ant and Maven builds are supported.
 
 For more information about LessCSS, see:
@@ -41,7 +41,7 @@ Example usage of the task in an Ant build file:
 
    <taskdef name="lesscss"
        classname="org.znerd.lesscss.ant.LessCSSTask"
-       classpath="lib/lesscss4j-ant-task.jar,lib/lesscss4j.jar" />
+       classpath="lib/lesscss-ji-ant-task.jar,lib/lesscss-ji-core.jar" />
 
    <lesscss dir="src/htdocs" todir="build/htdocs" />
 
