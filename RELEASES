@@ -1,3 +1,8 @@
+---- VERSION 0.7 (UNDER DEVELOPMENT) -----------------------------------------
+
+- Migrating to Maven, for building this project.
+
+
 ---- VERSION 0.6 (April 14, 2011) --------------------------------------------
 
 - Added parameter 'overwrite' for overwriting newer files.
