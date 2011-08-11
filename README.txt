@@ -1,5 +1,7 @@
-This is lesscss-ji, which allows Java builds to convert LessCSS files to
-regular CSS files. Both Apache Ant and Maven builds are supported.
+This is LessCSS-JI (JI is for Java Integration).
+
+LessCSS-JI allows Java builds (either Ant- or Maven-based) to convert LessCSS
+files to regular CSS files.
 
 For more information about LessCSS, see:
 
@@ -8,6 +10,7 @@ For more information about LessCSS, see:
 This code has been tested with the following combination of software:
 
    - Java SE 6
+   - Maven 3.0.3
    - Ant 1.8.2
    - lessc 1.1.13 and 1.2.21
    - plessc 0.1.6
@@ -26,14 +29,13 @@ This Ant task supports several LessCSS interpreters:
 This software is available under the terms of a BSD-style license, see
 the accompanied LICENSE.txt file.
 
-This task comes as a collection of Java source files that can be built with Ant.
-Just run:
 
-   ant
+BUILDING LESSCSS-JI
 
-The result will be a JAR file:
+This project is built using Maven, e.g.:
 
-   build/lesscss-ant-task.jar
+   mvn install
+
 
 ANT EXAMPLE
 
@@ -72,9 +74,15 @@ and other parameters inherited from the MatchingTask, see:
 
    http://ant.apache.org/manual/dirtasks.html
 
+
+ISSUES
+
 If you want to file a bug report or a feature request, please do so here:
 
    http://github.com/znerd/lesscss-ant-task/issues
+
+
+AUTHOR
 
 This software has been developed by:
 
