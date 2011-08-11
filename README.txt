@@ -1,33 +1,30 @@
-This is lesscss-ant-task, an Apache Ant task for converting LessCSS files to
-regular CSS files.
+This is lesscss4j, which allows Java builds to convert LessCSS files to
+regular CSS files. Both Apache Ant and Maven builds are supported.
 
 For more information about LessCSS, see:
 
    http://lesscss.org/
 
-This Ant task has been tested with the following combination of software:
+This code has been tested with the following combination of software:
 
-   - J2SE 5.0 and Java SE 6 (source code uses Java 5.0-features)
-   - Ant 1.7.1 and 1.8.1
+   - Java SE 6
+   - Ant 1.8.2
    - lessc 1.1.13 and 1.2.21
    - plessc 0.1.6
    - less.js 1.0.40
 
-This Ant task supports 2 distinct LessCSS interpreters:
+This Ant task supports several LessCSS interpreters:
 
-   1. 'lessc'  - The official interpreter from http://lesscss.org/.
-                 Ruby-based, performance is moderate.
+   1. less.js - The official node.js-based implementation, from
+                http://lesscss.org/, for the code see:
+                https://github.com/cloudhead/less.js
 
-   2. 'plessc' - LessPHP, an alternative implementation from
-                 http://leafo.net/lessphp/
-                 PHP-based, performance is good.
-
-   3. 'lessc'  - A node.js-based implementation, from
-                 https://github.com/cloudhead/less.js
-                 JavaScript-based.
+   2. plessc  - LessPHP, an alternative implementation from
+                http://leafo.net/lessphp/
+                PHP-based, performance is good.
 
 This software is available under the terms of a BSD-style license, see
-the accompanied LICENSE file.
+the accompanied LICENSE.txt file.
 
 This task comes as a collection of Java source files that can be built with Ant.
 Just run:
@@ -38,11 +35,13 @@ The result will be a JAR file:
 
    build/lesscss-ant-task.jar
 
+ANT EXAMPLE
+
 Example usage of the task in an Ant build file:
 
    <taskdef name="lesscss"
-       classname="com.pensioenpage.jynx.lesscss.LessCSSTask"
-       classpath="lib/lesscss-ant-task.jar" />
+       classname="org.znerd.lesscss.ant.LessCSSTask"
+       classpath="lib/lesscss4j-ant-task.jar,lib/lesscss4j.jar" />
 
    <lesscss dir="src/htdocs" todir="build/htdocs" />
 
