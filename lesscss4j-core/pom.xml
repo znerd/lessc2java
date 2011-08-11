@@ -11,6 +11,14 @@
 		<version>0.7-SNAPSHOT</version>
 	</parent>
 
+  <dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>lesscss4j-core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+  </dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
