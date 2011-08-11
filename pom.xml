@@ -13,7 +13,9 @@
   </properties>
 
   <modules>
+    <module>lesscss4j-core</module>
     <module>lesscss4j-ant-task</module>
+    <module>lesscss4j-maven-plugin</module>
   </modules>
 
   <dependencyManagement>

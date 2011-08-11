@@ -3,7 +3,7 @@
 	<groupId>org.znerd</groupId>
 	<artifactId>lesscss4j-ant-task</artifactId>
 	<packaging>jar</packaging>
-	<name>LessCSS Ant Task</name>
+	<name>LessCSS4J Ant Task</name>
 
 	<parent>
 		<groupId>org.znerd</groupId>
