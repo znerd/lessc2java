@@ -1,37 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.znerd</groupId>
-	<artifactId>lesscss-ant-task</artifactId>
-	<version>0.7-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>LessCSS Ant task</name>
-	<url>http://www.github.com/znerd/lesscss-ant-task</url>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.ant</groupId>
-			<artifactId>ant</artifactId>
-			<version>1.8.2</version>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-		</plugins>
-	</build>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.znerd</groupId>
+  <artifactId>lesscss4j</artifactId>
+  <packaging>pom</packaging>
+  <version>0.7-SNAPSHOT</version>
+  <name>LessCSS for Java (complete)</name>
+
   <properties>
-    <project.build.encoding>UTF-8</project.build.encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
+
+  <modules>
+    <module>lesscss4j-ant-task</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.ant</groupId>
+        <artifactId>ant</artifactId>
+        <version>1.8.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
 </project>
