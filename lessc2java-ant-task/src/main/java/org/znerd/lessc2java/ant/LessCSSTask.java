@@ -3,21 +3,14 @@ package org.znerd.lessc2java.ant;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.DirectoryScanner;
-import org.apache.tools.ant.Project;
 import static org.apache.tools.ant.Project.MSG_ERR;
 import static org.apache.tools.ant.Project.MSG_VERBOSE;
 import org.apache.tools.ant.taskdefs.Execute;
-import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
 import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
 import org.apache.tools.ant.taskdefs.MatchingTask;
-import org.znerd.lessc2java.Buffer;
 
 /**
  * An Apache Ant task for running a LessCSS compiler on a number of files, to convert them from <code>.less</code>- to <code>.css</code>-format.
@@ -27,11 +20,11 @@ import org.znerd.lessc2java.Buffer;
  * <dt>command
  * <dd>The name of the command to execute. Optional, defaults to <code>lessc</code>.
  * <dt>timeOut
- * <dd>The time-out for each individual invocation of the command, in milliseconds. Optional, defaults to 60000 (60 seconds).
+ * <dd>The time-out for each individual invocation of the command, in milliseconds. Optional, defaults to 60000 (60 seconds). Set to 0 or lower to disable the time-out.
  * <dt>dir
- * <dd>The source directory to read from. Optional, defaults to the project base directory.
+ * <dd>The source directory to read <code>.less</code> input files from. Optional, defaults to the project base directory.
  * <dt>toDir
- * <dd>The target directory to write to. Optional, defaults to the source directory.
+ * <dd>The target directory to write <code>.css</code> output files to. Optional, defaults to the source directory.
  * <dt>includes
  * <dd>The files to match in the source directory. Optional, defaults to all files.
  * <dt>excludes
@@ -45,16 +38,6 @@ import org.znerd.lessc2java.Buffer;
 public final class LessCSSTask extends MatchingTask {
 
     /**
-     * The name of the default LessCSS command: <code>"lessc"</code>.
-     */
-    public static final String DEFAULT_COMMAND = "lessc";
-
-    /**
-     * The default time-out: 60 seconds.
-     */
-    public static final long DEFAULT_TIMEOUT = 60L * 1000L;
-
-    /**
      * Returns a quoted version of the specified string, or <code>"(null)"</code> if the argument is <code>null</code>.
      * 
      * @param s the character string, can be <code>null</code>, e.g. <code>"foo bar"</code>.
@@ -62,39 +45,6 @@ public final class LessCSSTask extends MatchingTask {
      */
     private static final String quote(String s) {
         return s == null ? "(null)" : "\"" + s + '"';
-    }
-
-    /**
-     * Determines if the specified character string matches the regular expression.
-     * 
-     * @param s the string to research, or <code>null</code>.
-     * @param regex the regular expression, cannot be <code>null</code>.
-     * @return <code>true</code> if <code>s</em> matches the regular expression;
-     *    <code>false</code> if it does not.
-     * @throws IllegalArgumentException if <code>regex == null</code> or if it has an invalid syntax.
-     */
-    private static final boolean matches(String s, String regex) throws IllegalArgumentException {
-
-        // Check preconditions
-        if (regex == null) {
-            throw new IllegalArgumentException("regex == null");
-        }
-
-        // Compile the regular expression pattern
-        Pattern pattern;
-        try {
-            pattern = Pattern.compile(regex);
-        } catch (PatternSyntaxException cause) {
-            throw new IllegalArgumentException("Invalid regular expression \"" + regex + "\".", cause);
-        }
-
-        // Short-circuit if the string is null
-        if (s == null) {
-            return false;
-        }
-
-        // Find a match
-        return pattern.matcher(s).find();
     }
 
     /**
@@ -125,12 +75,13 @@ public final class LessCSSTask extends MatchingTask {
     private static final void checkDir(String description, File path, boolean mustBeReadable, boolean mustBeWritable) throws IllegalArgumentException, BuildException {
 
         // Check preconditions
-        if (isEmpty(description)) {
-            throw new IllegalArgumentException("description is empty (" + quote(description) + ')');
-        }
+        if (description == null) {
+            throw new IllegalArgumentException("description == null");
+        } else if ("".equals(description)) {
+            throw new IllegalArgumentException("description is empty");
 
         // Make sure the path refers to an existing directory
-        if (path == null) {
+        } else if (path == null) {
             throw new BuildException(description + " is not set.");
         } else if (!path.exists()) {
             throw new BuildException(description + " (\"" + path + "\") does not exist.");
@@ -147,74 +98,39 @@ public final class LessCSSTask extends MatchingTask {
         }
     }
 
-    /**
-     * Constructs a new <code>LessCSSTask</code> object.
-     */
-    public LessCSSTask() {
-        // empty
-    }
-
-    /**
-     * The directory to read <code>.less</code> files from. See {@link #setDir(File)}.
-     */
-    private File _sourceDir;
-
-    /**
-     * The directory to write <code>.css</code> files to. See {@link #setToDir(File)}.
-     */
-    private File _destDir;
-
-    /**
-     * The command to execute. If unset, then this task will attempt to find a proper executable by itself.
-     */
-    private String _command;
-
-    /**
-     * The time-out to apply, in milliseconds, or 0 (or lower) in case no time-out should be applied.
-     */
-    private long _timeOut;
-
-    private boolean _overwrite;
-
-    /**
-     * Sets the path to the source directory. This parameter is required.
-     * 
-     * @param dir the location of the source directory, or <code>null</code>.
-     */
     public void setDir(File dir) {
         _sourceDir = dir;
     }
 
-    /**
-     * Sets the path to the destination directory. The default is the same directory.
-     * 
-     * @param dir the location of the destination directory, or <code>null</code>.
-     */
+    private File _sourceDir;
+
     public void setToDir(File dir) {
         _destDir = dir;
     }
 
-    /**
-     * Sets the command to execute, optionally. By default this task will find a proper command on the current path.
-     * 
-     * @param command the command to use, e.g. <code>"/usr/local/bin/lessc"</code> or <code>jjlessc</code>; can be <code>null</code> (in which case the task will find the command).
-     */
+    private File _destDir;
+
     public void setCommand(String command) {
         _command = command;
     }
 
-    /**
-     * Configures the time-out for executing a single LessCSS command. The default is 60 seconds. Setting this to 0 or lower disables the time-out completely.
-     * 
-     * @param timeOut the time-out to use in milliseconds, or 0 (or lower) if no time-out should be applied.
-     */
+    private String _command = DEFAULT_COMMAND;
+
+    public static final String DEFAULT_COMMAND = "lessc";
+
     public void setTimeOut(long timeOut) {
         _timeOut = timeOut;
     }
 
+    private long _timeOut = DEFAULT_TIMEOUT;
+
+    public static final long DEFAULT_TIMEOUT = 60L * 1000L;
+
     public void setOverwrite(boolean overwrite) {
         _overwrite = true;
     }
+
+    private boolean _overwrite;
 
     @Override
     public void execute() throws BuildException {
@@ -236,35 +152,32 @@ public final class LessCSSTask extends MatchingTask {
         // Create a watch dog, if there is a time-out configured
         ExecuteWatchdog watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
 
-        // Determine what command to execute
-        String command = (_command == null || _command.length() < 1) ? DEFAULT_COMMAND : _command;
-
         // Check that the command is executable
         Buffer buffer = new Buffer();
         Execute execute = new Execute(buffer, watchdog);
-        String[] cmdline = new String[] { command, "-v" };
+        String[] cmdline = new String[] { _command, "-v" };
         execute.setAntRun(getProject());
         execute.setCommandline(cmdline);
         try {
             if (execute.execute() != 0) {
-                throw new BuildException("Unable to execute LessCSS command " + quote(command) + ". Running '" + command + " -v' resulted in exit code " + execute.getExitValue() + '.');
+                throw new BuildException("Unable to execute LessCSS command " + quote(_command) + ". Running it with the argument \"-v\" resulted in exit code " + execute.getExitValue() + '.');
             }
         } catch (IOException cause) {
-            throw new BuildException("Unable to execute LessCSS command " + quote(command) + '.', cause);
+            throw new BuildException("Unable to execute LessCSS command " + quote(_command) + '.', cause);
         }
 
         // Display the command and version number
         String versionString = buffer.getOutString().trim();
-        if (versionString.startsWith(command)) {
-            versionString = versionString.substring(command.length()).trim();
+        if (versionString.startsWith(_command)) {
+            versionString = versionString.substring(_command.length()).trim();
         }
         if (versionString.startsWith("v")) {
             versionString = versionString.substring(1).trim();
         }
-        log("Using command " + quote(command) + ", version is " + quote(versionString) + '.', MSG_VERBOSE);
+        log("Using command " + quote(_command) + ", version is " + quote(versionString) + '.', MSG_VERBOSE);
 
         // TODO: Improve this, detect kind of command
-        boolean createOutputFile = command.indexOf("plessc") >= 0;
+        boolean createOutputFile = _command.indexOf("plessc") >= 0;
 
         // Preparations done, consider each individual file for processing
         log("Transforming from " + _sourceDir.getPath() + " to " + _destDir.getPath() + '.', MSG_VERBOSE);
@@ -279,7 +192,7 @@ public final class LessCSSTask extends MatchingTask {
             }
 
             // Determine if the file type is supported
-            if (!matches(inFileName.toLowerCase(), "\\.less$")) {
+            if (inFileName.toLowerCase().matches("\\.less$")) {
                 log("Skipping " + quote(inFileName) + " because the file does not end in \".less\" (case-insensitive).", MSG_VERBOSE);
                 skippedCount++;
                 continue;
@@ -306,7 +219,7 @@ public final class LessCSSTask extends MatchingTask {
             buffer = new Buffer();
             watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
             execute = new Execute(buffer, watchdog);
-            cmdline = createOutputFile ? new String[] { command, inFilePath } : new String[] { command, inFilePath, outFilePath };
+            cmdline = createOutputFile ? new String[] { _command, inFilePath } : new String[] { _command, inFilePath, outFilePath };
 
             execute.setAntRun(getProject());
             execute.setCommandline(cmdline);
@@ -322,7 +235,7 @@ public final class LessCSSTask extends MatchingTask {
 
             // Output to stderr or stdout indicates a failure
             String errorOutput = buffer.getErrString();
-            errorOutput = isEmpty(errorOutput) ? buffer.getOutString() : errorOutput;
+            errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
             failure = failure ? true : !isEmpty(errorOutput);
 
             // Create the output file if the command just sent everything to

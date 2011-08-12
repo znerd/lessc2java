@@ -4,6 +4,7 @@
 - Migrating to Maven, for building this project.
 - Introduced separate JAR file for Core module.
 - Added a Maven plugin.
+- Refactored code and improved style.
 
 
 ---- VERSION 0.6 (April 14, 2011) --------------------------------------------
