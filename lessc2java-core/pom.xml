@@ -11,6 +11,13 @@
 		<version>0.7-SNAPSHOT</version>
 	</parent>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.znerd</groupId>
+			<artifactId>znerd-util</artifactId>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
