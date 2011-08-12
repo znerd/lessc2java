@@ -8,6 +8,7 @@
 - Removed support for commands that do not accept the output file as the
   second parameter. If you have such a less compiler, please use a script as
   a frontend.
+- Renamed LICENSE.txt to COPYRIGHT.txt.
 
 
 ---- VERSION 0.6 (April 14, 2011) --------------------------------------------
