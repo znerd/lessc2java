@@ -1,4 +1,6 @@
----- VERSION 0.8 (UNDER DEVELOPMENT) -----------------------------------------
+---- VERSION 0.8 (August 12, 2011) -------------------------------------------
+
+- Updated to znerd-util 0.3, there is a severe bug in 0.2.
 
 
 ---- VERSION 0.7 (August 12, 2011) -------------------------------------------
