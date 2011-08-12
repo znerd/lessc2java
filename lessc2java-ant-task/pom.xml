@@ -20,6 +20,11 @@
 		</dependency>
 -->
 		<dependency>
+			<groupId>org.znerd</groupId>
+			<artifactId>logdoc-base</artifactId> <!-- TODO: Change to util or so -->
+			<version>0.15</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
 		</dependency>
