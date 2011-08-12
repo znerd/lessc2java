@@ -43,7 +43,7 @@ public final class LesscTask extends MatchingTask {
     public LesscTask() {
         setIncludes("*.less");
     }
-    
+
     private static final boolean isEmpty(String s) {
         return s == null || s.trim().length() < 1;
     }
@@ -90,14 +90,12 @@ public final class LesscTask extends MatchingTask {
             throw new BuildException("Lessc processing failed", cause);
         }
     }
-    
+
     private void executeImpl() throws IOException {
         File sourceDir = determineSourceDir();
         File destDir = determineDestDir(sourceDir);
         checkDirs(sourceDir, destDir);
-        ExecuteWatchdog watchdog = createWatchdog();
-        determineCommandVersion(watchdog);
-        transformFiles(sourceDir, destDir, watchdog);
+        determineVersionAndTransformFiles(sourceDir, destDir);
     }
 
     private File determineSourceDir() {
@@ -123,6 +121,13 @@ public final class LesscTask extends MatchingTask {
     private void checkDirs(File sourceDir, File destDir) throws IOException {
         CheckDirUtils.checkDir("Source directory", sourceDir, true, false, false);
         CheckDirUtils.checkDir("Destination directory", destDir, false, true, true);
+    }
+
+    private void determineVersionAndTransformFiles(File sourceDir, File destDir) throws IOException {
+        ExecuteWatchdog watchdog = createWatchdog();
+        determineCommandVersion(watchdog);
+        String[] includedFiles = determineIncludedFiles(sourceDir);
+        transformFiles(sourceDir, destDir, includedFiles, watchdog);
     }
 
     private ExecuteWatchdog createWatchdog() {
@@ -171,45 +176,71 @@ public final class LesscTask extends MatchingTask {
         return s == null ? "(null)" : "\"" + s + '"';
     }
 
-    private void transformFiles(File sourceDir, File destDir, ExecuteWatchdog watchdog) {
+    private String[] determineIncludedFiles(File sourceDir) {
+        String[] includedFiles = getDirectoryScanner(sourceDir).getIncludedFiles();
+        return includedFiles;
+    }
 
+    private void transformFiles(File sourceDir, File destDir, String[] includedFiles, ExecuteWatchdog watchdog) {
         log("Transforming from " + sourceDir.getPath() + " to " + destDir.getPath() + '.', MSG_VERBOSE);
         long start = System.currentTimeMillis();
         int failedCount = 0, successCount = 0, skippedCount = 0;
-        for (String inFileName : getDirectoryScanner(sourceDir).getIncludedFiles()) {
-    
-            // Make sure the input file exists
-            File inFile = new File(sourceDir, inFileName);
-            if (!inFile.exists()) {
-                continue;
-            }
-    
-            // Some preparations related to the input file and output file
-            long thisStart = System.currentTimeMillis();
-            String outFileName = inFile.getName().replaceFirst("\\.less$", ".css");
-            File outFile = new File(destDir, outFileName);
-            String outFilePath = outFile.getPath();
-            String inFilePath = inFile.getPath();
-    
-            if (!_overwrite) {
-    
-                // Skip this file is the output file exists and is newer
-                if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
-                    log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE);
+        for (String inFileName : includedFiles) {
+            switch (transformFile(sourceDir, destDir, inFileName)) {
+                case SKIPPED:
                     skippedCount++;
-                    continue;
-                }
+                    break;
+                case SUCCEEDED:
+                    successCount++;
+                    break;
+                case FAILED:
+                    failedCount++;
+                    break;
             }
-    
+        }
+        logGrandResult(start, skippedCount, successCount, failedCount);
+    }
+
+    private void logGrandResult(long start, int skippedCount, int successCount, int failedCount) {
+        long duration = System.currentTimeMillis() - start;
+        if (failedCount > 0) {
+            throw new BuildException("" + failedCount + " file(s) failed to transform, while " + successCount + " succeeded. Total duration is " + duration + " ms.");
+        } else {
+            log("" + successCount + " file(s) transformed in " + duration + " ms; " + skippedCount + " file(s) skipped.");
+        }
+    }
+
+    private FileTransformResult transformFile(File sourceDir, File destDir, String inFileName) {
+        ExecuteWatchdog watchdog;
+        FileTransformResult result;
+        result = null;
+        File inFile = new File(sourceDir, inFileName);
+
+        // Some preparations related to the input file and output file
+        long thisStart = System.currentTimeMillis();
+        String outFileName = inFile.getName().replaceFirst("\\.less$", ".css");
+        File outFile = new File(destDir, outFileName);
+        String outFilePath = outFile.getPath();
+        String inFilePath = inFile.getPath();
+
+
+        if (!_overwrite) {
+            if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
+                log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE);
+                result = FileTransformResult.SKIPPED;
+            }
+        }
+
+        if (result == null) {
             // Prepare for the command execution
             Buffer buffer = new Buffer();
             watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
             Execute execute = new Execute(buffer, watchdog);
             String[] cmdline = new String[] { _command, inFilePath, outFilePath };
-    
+
             execute.setAntRun(getProject());
             execute.setCommandline(cmdline);
-    
+
             // Execute the command
             boolean failure;
             try {
@@ -218,12 +249,12 @@ public final class LesscTask extends MatchingTask {
             } catch (IOException cause) {
                 failure = true;
             }
-    
+
             // Output to stderr or stdout indicates a failure
             String errorOutput = buffer.getErrString();
             errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
             failure = failure ? true : !isEmpty(errorOutput);
-    
+
             // Log the result for this individual file
             long thisDuration = System.currentTimeMillis() - thisStart;
             if (failure) {
@@ -234,19 +265,16 @@ public final class LesscTask extends MatchingTask {
                     logMessage += ':' + System.getProperty("line.separator") + errorOutput;
                 }
                 log(logMessage, MSG_ERR);
-                failedCount++;
+                result = FileTransformResult.FAILED;
             } else {
                 log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
-                successCount++;
+                result = FileTransformResult.SUCCEEDED;
             }
         }
-    
-        // Log the total result
-        long duration = System.currentTimeMillis() - start;
-        if (failedCount > 0) {
-            throw new BuildException("" + failedCount + " file(s) failed to transform, while " + successCount + " succeeded. Total duration is " + duration + " ms.");
-        } else {
-            log("" + successCount + " file(s) transformed in " + duration + " ms; " + skippedCount + " file(s) skipped.");
-        }
+        return result;
+    }
+
+    private enum FileTransformResult {
+        SKIPPED, SUCCEEDED, FAILED;
     }
 }
