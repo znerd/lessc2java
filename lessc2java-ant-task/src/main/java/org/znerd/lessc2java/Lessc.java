@@ -6,11 +6,11 @@ import java.io.IOException;
 
 public final class Lessc {
 
-    public static void compile(CommandRunner commandRunner, File baseDir, File sourceDir, File targetDir, String command, long timeOut, boolean overwrite) throws IOException {
+    public static void compile(CommandRunner commandRunner, File baseDir, File sourceDir, String[] includedFiles, File targetDir, String command, long timeOut, boolean overwrite) throws IOException {
         File actualSourceDir = determineSourceDir(baseDir, sourceDir);
         File actualTargetDir = determineTargetDir(actualSourceDir, targetDir);
-        
-        LesscExecutor executor = new LesscExecutor(commandRunner, actualSourceDir, actualTargetDir, command, overwrite);
+
+        LesscExecutor executor = new LesscExecutor(commandRunner, actualSourceDir, includedFiles, actualTargetDir, command, overwrite);
         executor.execute();
     }
 

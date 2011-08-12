@@ -14,8 +14,6 @@ import org.apache.tools.ant.taskdefs.StreamPumper;
  */
 public class Buffer extends Object implements ExecuteStreamHandler {
 
-    // TODO: Add state checking
-
     /**
      * Constructs a new <code>Buffer</code>.
      */

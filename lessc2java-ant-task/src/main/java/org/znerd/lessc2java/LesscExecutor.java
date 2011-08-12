@@ -4,7 +4,6 @@ package org.znerd.lessc2java;
 import java.io.File;
 import java.io.IOException;
 
-import org.znerd.lessc2java.ant.Buffer;
 import static org.znerd.util.log.Limb.log;
 import static org.znerd.util.log.LogLevel.*;
 import static org.znerd.util.text.TextUtils.isEmpty;
@@ -12,11 +11,21 @@ import static org.znerd.util.io.CheckDirUtils.checkDir;
 
 class LesscExecutor {
 
-    public LesscExecutor(CommandRunner commandRunner, File sourceDir, File targetDir, String command, boolean overwrite) {
-        // TODO: Check arguments?
+    private static void illegalArgumentCheck(boolean cond, String message) {
+        if (cond) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+    
+    public LesscExecutor(CommandRunner commandRunner, File sourceDir, String[] includes, File targetDir, String command, boolean overwrite) {
+
+        illegalArgumentCheck(commandRunner == null, "commandRunner == null");
+        illegalArgumentCheck(sourceDir == null, "sourceDir == null");
+        illegalArgumentCheck(includes == null, "includes == null");
 
         _commandRunner = commandRunner;
         _sourceDir = sourceDir;
+        _includes = includes;
         _targetDir = targetDir;
         _command = command;
         _overwrite = overwrite;
@@ -24,6 +33,7 @@ class LesscExecutor {
 
     private final CommandRunner _commandRunner;
     private final File _sourceDir;
+    private final String[] _includes;
     private final File _targetDir;
     private final String _command;
     private final boolean _overwrite;
@@ -79,10 +89,9 @@ class LesscExecutor {
 
     private void processFiles(File sourceDir, File destDir) throws IOException {
         log(INFO, "Transforming from " + sourceDir.getPath() + " to " + destDir.getPath() + '.');
-        String[] includedFiles = getDirectoryScanner(sourceDir).getIncludedFiles();
         long start = System.currentTimeMillis();
         int failedCount = 0, successCount = 0, skippedCount = 0;
-        for (String inFileName : includedFiles) {
+        for (String inFileName : _includes) {
             switch (processFile(sourceDir, destDir, inFileName)) {
                 case SKIPPED:
                     skippedCount++;

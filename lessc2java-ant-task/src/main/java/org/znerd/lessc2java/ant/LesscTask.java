@@ -77,10 +77,11 @@ public final class LesscTask extends MatchingTask {
 
     @Override
     public void execute() throws BuildException {
-        CommandRunner commandRunner = new CommandRunner(getProject(), _timeOut);
+        CommandRunner commandRunner = new AntCommandRunner(getProject(), _timeOut);
         File baseDir = determineProjectBaseDir();
+        String[] includedFiles = getDirectoryScanner(_sourceDir).getIncludedFiles();
         try {
-            Lessc.compile(commandRunner, baseDir, _sourceDir, _destDir, _command, _timeOut, _overwrite);
+            Lessc.compile(commandRunner, baseDir, _sourceDir, includedFiles, _destDir, _command, _timeOut, _overwrite);
         } catch (IOException cause) {
             throw new BuildException("Lessc processing failed", cause);
         }
