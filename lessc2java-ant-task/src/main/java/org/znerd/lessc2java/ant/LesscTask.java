@@ -11,7 +11,7 @@ import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
 import org.apache.tools.ant.taskdefs.MatchingTask;
 
-import org.znerd.logdoc.internal.CheckDirUtils;
+import org.znerd.util.io.CheckDirUtils;
 
 /**
  * An Apache Ant task for running a LessCSS compiler on a number of files, to convert them from <code>.less</code>- to <code>.css</code>-format.
