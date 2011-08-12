@@ -127,7 +127,7 @@ public final class LesscTask extends MatchingTask {
         ExecuteWatchdog watchdog = createWatchdog();
         determineCommandVersion(watchdog);
         String[] includedFiles = determineIncludedFiles(sourceDir);
-        transformFiles(sourceDir, destDir, includedFiles, watchdog);
+        processFiles(sourceDir, destDir, includedFiles, watchdog);
     }
 
     private ExecuteWatchdog createWatchdog() {
@@ -181,12 +181,12 @@ public final class LesscTask extends MatchingTask {
         return includedFiles;
     }
 
-    private void transformFiles(File sourceDir, File destDir, String[] includedFiles, ExecuteWatchdog watchdog) {
+    private void processFiles(File sourceDir, File destDir, String[] includedFiles, ExecuteWatchdog watchdog) {
         log("Transforming from " + sourceDir.getPath() + " to " + destDir.getPath() + '.', MSG_VERBOSE);
         long start = System.currentTimeMillis();
         int failedCount = 0, successCount = 0, skippedCount = 0;
         for (String inFileName : includedFiles) {
-            switch (transformFile(sourceDir, destDir, inFileName)) {
+            switch (processFile(sourceDir, destDir, inFileName)) {
                 case SKIPPED:
                     skippedCount++;
                     break;
@@ -210,66 +210,75 @@ public final class LesscTask extends MatchingTask {
         }
     }
 
-    private FileTransformResult transformFile(File sourceDir, File destDir, String inFileName) {
-        ExecuteWatchdog watchdog;
-        FileTransformResult result;
-        result = null;
-        File inFile = new File(sourceDir, inFileName);
+    private FileTransformResult processFile(File sourceDir, File destDir, String inFileName) {
 
-        // Some preparations related to the input file and output file
+        File inFile = new File(sourceDir, inFileName);
         long thisStart = System.currentTimeMillis();
         String outFileName = inFile.getName().replaceFirst("\\.less$", ".css");
         File outFile = new File(destDir, outFileName);
         String outFilePath = outFile.getPath();
         String inFilePath = inFile.getPath();
 
+        FileTransformResult result;
+        if (shouldSkipFile(inFileName, inFile, outFile)) {
+            result = FileTransformResult.SKIPPED;
+        } else {
+            result = transform(inFileName, thisStart, outFilePath, inFilePath);
+        }
+        return result;
+    }
 
+    private boolean shouldSkipFile(String inFileName, File inFile, File outFile) {
+        boolean skip = false;
         if (!_overwrite) {
             if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
                 log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE);
-                result = FileTransformResult.SKIPPED;
+                skip = true;
             }
         }
+        return skip;
+    }
 
-        if (result == null) {
-            // Prepare for the command execution
-            Buffer buffer = new Buffer();
-            watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
-            Execute execute = new Execute(buffer, watchdog);
-            String[] cmdline = new String[] { _command, inFilePath, outFilePath };
+    private FileTransformResult transform(String inFileName, long thisStart, String outFilePath, String inFilePath) {
+        ExecuteWatchdog watchdog;
+        FileTransformResult result;
+        // Prepare for the command execution
+        Buffer buffer = new Buffer();
+        watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
+        Execute execute = new Execute(buffer, watchdog);
+        String[] cmdline = new String[] { _command, inFilePath, outFilePath };
 
-            execute.setAntRun(getProject());
-            execute.setCommandline(cmdline);
+        execute.setAntRun(getProject());
+        execute.setCommandline(cmdline);
 
-            // Execute the command
-            boolean failure;
-            try {
-                execute.execute();
-                failure = execute.isFailure();
-            } catch (IOException cause) {
-                failure = true;
-            }
+        // Execute the command
+        boolean failure;
+        try {
+            execute.execute();
+            failure = execute.isFailure();
+        } catch (IOException cause) {
+            failure = true;
+        }
 
-            // Output to stderr or stdout indicates a failure
-            String errorOutput = buffer.getErrString();
-            errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
-            failure = failure ? true : !isEmpty(errorOutput);
+        // Output to stderr or stdout indicates a failure
+        String errorOutput = buffer.getErrString();
+        errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
+        failure = failure ? true : !isEmpty(errorOutput);
 
-            // Log the result for this individual file
-            long thisDuration = System.currentTimeMillis() - thisStart;
-            if (failure) {
-                String logMessage = "Failed to transform " + quote(inFilePath);
-                if (isEmpty(errorOutput)) {
-                    logMessage += '.';
-                } else {
-                    logMessage += ':' + System.getProperty("line.separator") + errorOutput;
-                }
-                log(logMessage, MSG_ERR);
-                result = FileTransformResult.FAILED;
+        // Log the result for this individual file
+        long thisDuration = System.currentTimeMillis() - thisStart;
+        if (failure) {
+            String logMessage = "Failed to transform " + quote(inFilePath);
+            if (isEmpty(errorOutput)) {
+                logMessage += '.';
             } else {
-                log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
-                result = FileTransformResult.SUCCEEDED;
+                logMessage += ':' + System.getProperty("line.separator") + errorOutput;
             }
+            log(logMessage, MSG_ERR);
+            result = FileTransformResult.FAILED;
+        } else {
+            log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
+            result = FileTransformResult.SUCCEEDED;
         }
         return result;
     }
