@@ -1,6 +1,9 @@
 ---- VERSION 0.7 (UNDER DEVELOPMENT) -----------------------------------------
 
+- Renamed project from lesscss-ant-task to lessc2java.
 - Migrating to Maven, for building this project.
+- Introduced separate JAR file for Core module.
+- Added a Maven plugin.
 
 
 ---- VERSION 0.6 (April 14, 2011) --------------------------------------------
