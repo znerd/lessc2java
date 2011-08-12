@@ -4,10 +4,21 @@ Add a ServletFilter ?
 
 ------------------------------------------------------------------------------
 
-From the transformFiles method, the following code snippet was removed:
+From the transformFiles method, the following code snippet was removed.
+Should that check be added back in?
 
             if (!inFile.exists()) {
                 continue;
             }
 
-Should that check be added back in?
+
+------------------------------------------------------------------------------
+
+The following code was removed, should it be added back in?
+
+        // Output to stderr or stdout indicates a failure
+        String errorOutput = buffer.getErrString();
+        errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
+        failure = failure ? true : !isEmpty(errorOutput);
+
+------------------------------------------------------------------------------
