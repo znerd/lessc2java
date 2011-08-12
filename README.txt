@@ -45,7 +45,7 @@ ANT EXAMPLE
 Example usage of the task in an Ant build file:
 
    <taskdef name="lesscss"
-       classname="org.znerd.lesscss.ant.LessCSSTask"
+       classname="org.znerd.lesscss.ant.LesscTask"
        classpath="lib/lessc4java-ant-task.jar,lib/lessc4java-core.jar" />
 
    <lesscss dir="src/htdocs" todir="build/htdocs" />
