@@ -240,11 +240,9 @@ public final class LesscTask extends MatchingTask {
     }
 
     private FileTransformResult transform(String inFileName, long thisStart, String outFilePath, String inFilePath) {
-        ExecuteWatchdog watchdog;
-        FileTransformResult result;
-        // Prepare for the command execution
+
         Buffer buffer = new Buffer();
-        watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
+        ExecuteWatchdog watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
         Execute execute = new Execute(buffer, watchdog);
         String[] cmdline = new String[] { _command, inFilePath, outFilePath };
 
@@ -267,6 +265,7 @@ public final class LesscTask extends MatchingTask {
 
         // Log the result for this individual file
         long thisDuration = System.currentTimeMillis() - thisStart;
+        FileTransformResult result;
         if (failure) {
             String logMessage = "Failed to transform " + quote(inFilePath);
             if (isEmpty(errorOutput)) {
