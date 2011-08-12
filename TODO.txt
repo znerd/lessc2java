@@ -1,1 +1,13 @@
+------------------------------------------------------------------------------
+
 Add a ServletFilter ?
+
+------------------------------------------------------------------------------
+
+From the transformFiles method, the following code snippet was removed:
+
+            if (!inFile.exists()) {
+                continue;
+            }
+
+Should that check be added back in?
