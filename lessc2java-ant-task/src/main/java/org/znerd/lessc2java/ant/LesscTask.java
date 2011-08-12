@@ -19,6 +19,8 @@ import org.znerd.logdoc.internal.CheckDirUtils;
  * <p>
  * The most notable parameters supported by this task are:
  * <dl>
+ * <dt>includes
+ * <dd>The pattern for files in include. Defaults to <code>*.less</code>.
  * <dt>command
  * <dd>The name of the command to execute. Optional, defaults to <code>lessc</code>.
  * <dt>timeOut
@@ -39,6 +41,10 @@ import org.znerd.logdoc.internal.CheckDirUtils;
  */
 public final class LesscTask extends MatchingTask {
 
+    public LesscTask() {
+        setIncludes("*.less");
+    }
+    
     private static final boolean isEmpty(String s) {
         return s == null || s.trim().length() < 1;
     }
@@ -108,13 +114,6 @@ public final class LesscTask extends MatchingTask {
             // Make sure the input file exists
             File inFile = new File(sourceDir, inFileName);
             if (!inFile.exists()) {
-                continue;
-            }
-
-            // Determine if the file type is supported
-            if (inFileName.toLowerCase().matches("\\.less$")) {
-                log("Skipping " + quote(inFileName) + " because the file does not end in \".less\" (case-insensitive).", MSG_VERBOSE);
-                skippedCount++;
                 continue;
             }
 
