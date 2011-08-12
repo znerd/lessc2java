@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.znerd</groupId>
-  <artifactId>lesscss-ji</artifactId>
+  <artifactId>lessc2java</artifactId>
   <packaging>pom</packaging>
   <version>0.7-SNAPSHOT</version>
-  <name>LessCSS Java Integration (complete)</name>
+  <name>Lessc2java Project</name>
 
   <properties>
 		<maven.version>3.0.3</maven.version>
@@ -13,9 +13,9 @@
   </properties>
 
   <modules>
-    <module>lesscss-ji-core</module>
-    <module>lesscss-ji-ant-task</module>
-    <module>lesscss-ji-maven-plugin</module>
+    <module>lessc2java-core</module>
+    <module>lessc2java-ant-task</module>
+    <module>lessc2java-maven-plugin</module>
   </modules>
 
   <dependencyManagement>

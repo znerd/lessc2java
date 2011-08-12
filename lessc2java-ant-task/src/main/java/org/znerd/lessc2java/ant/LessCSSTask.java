@@ -1,5 +1,5 @@
 // Copyright 2011, Ernst de Haan
-package org.znerd.lesscss.ji.ant;
+package org.znerd.lessc2java.ant;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,7 +17,7 @@ import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
 import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
 import org.apache.tools.ant.taskdefs.MatchingTask;
-import org.znerd.lesscss.ji.Buffer;
+import org.znerd.lessc2java.Buffer;
 
 /**
  * An Apache Ant task for running a LessCSS compiler on a number of files, to convert them from <code>.less</code>- to <code>.css</code>-format.

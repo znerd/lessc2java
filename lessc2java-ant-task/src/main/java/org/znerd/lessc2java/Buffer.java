@@ -1,5 +1,5 @@
 // Copyright 2011, Ernst de Haan
-package org.znerd.lesscss.ji;
+package org.znerd.lessc2java;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

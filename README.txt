@@ -1,7 +1,5 @@
-This is LessCSS-JI (JI is for Java Integration).
-
-LessCSS-JI allows Java builds (either Ant- or Maven-based) to convert LessCSS
-files to regular CSS files.
+This is lessc2java; this open source project allows Java builds (either Ant-
+or Maven-based) to convert LessCSS files to regular CSS files.
 
 For more information about LessCSS, see:
 
@@ -16,7 +14,7 @@ This code has been tested with the following combination of software:
    - plessc 0.1.6
    - less.js 1.0.40
 
-This Ant task supports several LessCSS interpreters:
+Several LessCSS interpreters are supported:
 
    1. less.js - The official node.js-based implementation, from
                 http://lesscss.org/, for the code see:
@@ -25,6 +23,11 @@ This Ant task supports several LessCSS interpreters:
    2. plessc  - LessPHP, an alternative implementation from
                 http://leafo.net/lessphp/
                 PHP-based, performance is good.
+
+Others may work equally well.
+
+
+LICENSE
 
 This software is available under the terms of a BSD-style license, see
 the accompanied LICENSE.txt file.
@@ -43,7 +46,7 @@ Example usage of the task in an Ant build file:
 
    <taskdef name="lesscss"
        classname="org.znerd.lesscss.ant.LessCSSTask"
-       classpath="lib/lesscss-ji-ant-task.jar,lib/lesscss-ji-core.jar" />
+       classpath="lib/lessc4java-ant-task.jar,lib/lessc4java-core.jar" />
 
    <lesscss dir="src/htdocs" todir="build/htdocs" />
 
