@@ -2,7 +2,6 @@
 package org.znerd.lessc2java.ant;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.tools.ant.BuildException;
@@ -93,104 +92,12 @@ public final class LesscTask extends MatchingTask {
     }
     
     private void executeImpl() throws IOException {
-
         File sourceDir = determineSourceDir();
         File destDir = determineDestDir(sourceDir);
         checkDirs(sourceDir, destDir);
         ExecuteWatchdog watchdog = createWatchdog();
         determineCommandVersion(watchdog);
-
-        String[] cmdline;
-
-        // TODO: Improve this, detect kind of command
-        boolean createOutputFile = _command.indexOf("plessc") >= 0;
-
-        // Preparations done, consider each individual file for processing
-        log("Transforming from " + sourceDir.getPath() + " to " + _destDir.getPath() + '.', MSG_VERBOSE);
-        long start = System.currentTimeMillis();
-        int failedCount = 0, successCount = 0, skippedCount = 0;
-        for (String inFileName : getDirectoryScanner(sourceDir).getIncludedFiles()) {
-
-            // Make sure the input file exists
-            File inFile = new File(sourceDir, inFileName);
-            if (!inFile.exists()) {
-                continue;
-            }
-
-            // Some preparations related to the input file and output file
-            long thisStart = System.currentTimeMillis();
-            String outFileName = inFile.getName().replaceFirst("\\.less$", ".css");
-            File outFile = new File(_destDir, outFileName);
-            String outFilePath = outFile.getPath();
-            String inFilePath = inFile.getPath();
-
-            if (!_overwrite) {
-
-                // Skip this file is the output file exists and is newer
-                if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
-                    log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE);
-                    skippedCount++;
-                    continue;
-                }
-            }
-
-            // Prepare for the command execution
-            Buffer buffer = new Buffer();
-            watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
-            Execute execute = new Execute(buffer, watchdog);
-            cmdline = createOutputFile ? new String[] { _command, inFilePath } : new String[] { _command, inFilePath, outFilePath };
-
-            execute.setAntRun(getProject());
-            execute.setCommandline(cmdline);
-
-            // Execute the command
-            boolean failure;
-            try {
-                execute.execute();
-                failure = execute.isFailure();
-            } catch (IOException cause) {
-                failure = true;
-            }
-
-            // Output to stderr or stdout indicates a failure
-            String errorOutput = buffer.getErrString();
-            errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
-            failure = failure ? true : !isEmpty(errorOutput);
-
-            // Create the output file if the command just sent everything to
-            // standard out
-            if (createOutputFile) {
-                try {
-                    buffer.writeOutTo(new FileOutputStream(outFile));
-                } catch (IOException cause) {
-                    throw new BuildException("Failed to write output to file \"" + outFile.getPath() + "\".", cause);
-                }
-            }
-
-            // Log the result for this individual file
-            long thisDuration = System.currentTimeMillis() - thisStart;
-            if (failure) {
-                String logMessage = "Failed to transform " + quote(inFilePath);
-                if (isEmpty(errorOutput)) {
-                    logMessage += '.';
-                } else {
-                    logMessage += ':' + System.getProperty("line.separator") + errorOutput;
-                }
-                log(logMessage, MSG_ERR);
-                failedCount++;
-            } else {
-                log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
-                successCount++;
-            }
-        }
-
-        // Log the total result
-        long duration = System.currentTimeMillis() - start;
-        if (failedCount > 0) {
-            throw new BuildException("" + failedCount + " file(s) failed to transform, while " + successCount + " succeeded. Total duration is " + duration + " ms.");
-        } else {
-            log("" + successCount + " file(s) transformed in " + duration + " ms; " + skippedCount + " file(s) skipped.");
-        }
+        transformFiles(sourceDir, destDir, watchdog);
     }
 
     private File determineSourceDir() {
@@ -230,21 +137,6 @@ public final class LesscTask extends MatchingTask {
         log("Using command " + quote(_command) + ", version is " + quote(versionString) + '.', MSG_VERBOSE);
     }
 
-    private static final String quote(String s) {
-        return s == null ? "(null)" : "\"" + s + '"';
-    }
-
-    private String parseVersionString(Buffer buffer) {
-        String versionString = buffer.getOutString().trim();
-        if (versionString.startsWith(_command)) {
-            versionString = versionString.substring(_command.length()).trim();
-        }
-        if (versionString.startsWith("v")) {
-            versionString = versionString.substring(1).trim();
-        }
-        return versionString;
-    }
-
     private void executeVersionCommand(ExecuteWatchdog watchdog, Buffer buffer) throws IOException {
         Execute execute = createVersionExecute(watchdog, buffer);
         try {
@@ -262,5 +154,99 @@ public final class LesscTask extends MatchingTask {
         execute.setAntRun(getProject());
         execute.setCommandline(cmdline);
         return execute;
+    }
+
+    private String parseVersionString(Buffer buffer) {
+        String versionString = buffer.getOutString().trim();
+        if (versionString.startsWith(_command)) {
+            versionString = versionString.substring(_command.length()).trim();
+        }
+        if (versionString.startsWith("v")) {
+            versionString = versionString.substring(1).trim();
+        }
+        return versionString;
+    }
+
+    private static final String quote(String s) {
+        return s == null ? "(null)" : "\"" + s + '"';
+    }
+
+    private void transformFiles(File sourceDir, File destDir, ExecuteWatchdog watchdog) {
+
+        log("Transforming from " + sourceDir.getPath() + " to " + destDir.getPath() + '.', MSG_VERBOSE);
+        long start = System.currentTimeMillis();
+        int failedCount = 0, successCount = 0, skippedCount = 0;
+        for (String inFileName : getDirectoryScanner(sourceDir).getIncludedFiles()) {
+    
+            // Make sure the input file exists
+            File inFile = new File(sourceDir, inFileName);
+            if (!inFile.exists()) {
+                continue;
+            }
+    
+            // Some preparations related to the input file and output file
+            long thisStart = System.currentTimeMillis();
+            String outFileName = inFile.getName().replaceFirst("\\.less$", ".css");
+            File outFile = new File(destDir, outFileName);
+            String outFilePath = outFile.getPath();
+            String inFilePath = inFile.getPath();
+    
+            if (!_overwrite) {
+    
+                // Skip this file is the output file exists and is newer
+                if (outFile.exists() && (outFile.lastModified() > inFile.lastModified())) {
+                    log("Skipping " + quote(inFileName) + " because output file is newer.", MSG_VERBOSE);
+                    skippedCount++;
+                    continue;
+                }
+            }
+    
+            // Prepare for the command execution
+            Buffer buffer = new Buffer();
+            watchdog = (_timeOut > 0L) ? new ExecuteWatchdog(_timeOut) : null;
+            Execute execute = new Execute(buffer, watchdog);
+            String[] cmdline = new String[] { _command, inFilePath, outFilePath };
+    
+            execute.setAntRun(getProject());
+            execute.setCommandline(cmdline);
+    
+            // Execute the command
+            boolean failure;
+            try {
+                execute.execute();
+                failure = execute.isFailure();
+            } catch (IOException cause) {
+                failure = true;
+            }
+    
+            // Output to stderr or stdout indicates a failure
+            String errorOutput = buffer.getErrString();
+            errorOutput = (errorOutput == null || "".equals(errorOutput)) ? buffer.getOutString() : errorOutput;
+            failure = failure ? true : !isEmpty(errorOutput);
+    
+            // Log the result for this individual file
+            long thisDuration = System.currentTimeMillis() - thisStart;
+            if (failure) {
+                String logMessage = "Failed to transform " + quote(inFilePath);
+                if (isEmpty(errorOutput)) {
+                    logMessage += '.';
+                } else {
+                    logMessage += ':' + System.getProperty("line.separator") + errorOutput;
+                }
+                log(logMessage, MSG_ERR);
+                failedCount++;
+            } else {
+                log("Transformed " + quote(inFileName) + " in " + thisDuration + " ms.", MSG_VERBOSE);
+                successCount++;
+            }
+        }
+    
+        // Log the total result
+        long duration = System.currentTimeMillis() - start;
+        if (failedCount > 0) {
+            throw new BuildException("" + failedCount + " file(s) failed to transform, while " + successCount + " succeeded. Total duration is " + duration + " ms.");
+        } else {
+            log("" + successCount + " file(s) transformed in " + duration + " ms; " + skippedCount + " file(s) skipped.");
+        }
     }
 }

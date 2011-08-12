@@ -5,6 +5,9 @@
 - Introduced separate JAR file for Core module.
 - Added a Maven plugin.
 - Refactored code and improved style.
+- Removed support for commands that do not accept the output file as the
+  second parameter. If you have such a less compiler, please use a script as
+  a frontend.
 
 
 ---- VERSION 0.6 (April 14, 2011) --------------------------------------------
