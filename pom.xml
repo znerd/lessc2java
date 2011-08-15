@@ -3,7 +3,7 @@
   <groupId>org.znerd</groupId>
   <artifactId>lessc2java</artifactId>
   <packaging>pom</packaging>
-  <version>0.10</version>
+  <version>0.11-SNAPSHOT</version>
   <name>Lessc2java Project</name>
 
   <properties>
