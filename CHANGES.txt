@@ -1,4 +1,9 @@
----- VERSION 0.9 (UNDER DEVELOPMENT) -----------------------------------------
+---- VERSION 0.10 (August 15, 2011) ------------------------------------------
+
+* Fixed: Parameters can be specified, by using @parameter alias.
+
+
+---- VERSION 0.9 (August 15, 2011) -------------------------------------------
 
 * Moved CommandRunner and associated classes to znerd-util.
 * Refactoring.

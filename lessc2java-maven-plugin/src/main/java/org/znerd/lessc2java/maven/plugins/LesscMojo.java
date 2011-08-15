@@ -84,13 +84,12 @@ public class LesscMojo extends AbstractMojo {
     }
 
     /**
-     * @parameter name="in" expression="${basedir}/src/main/resources/less"
-     * @required
+     * @parameter alias="in" default-value="${basedir}/src/main/resources/less"
      */
     private File _sourceDir;
 
     /**
-     * @parameter name="out" expression="${basedir}/target/css"
+     * @parameter alias="out" default-value="${basedir}/target/css"
      * @required
      */
     private File _targetDir;
