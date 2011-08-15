@@ -19,9 +19,8 @@ class LesscExecutor {
             throw new IllegalArgumentException(message);
         }
     }
-    
-    public LesscExecutor(CommandRunner commandRunner, File sourceDir, String[] includes, File targetDir, String command, boolean overwrite) {
 
+    public LesscExecutor(CommandRunner commandRunner, File sourceDir, String[] includes, File targetDir, String command, boolean overwrite) {
         illegalArgumentCheck(commandRunner == null, "commandRunner == null");
         illegalArgumentCheck(sourceDir == null, "sourceDir == null");
         illegalArgumentCheck(includes == null, "includes == null");
