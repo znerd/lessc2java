@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.znerd</groupId>
 		<artifactId>lessc2java</artifactId>
-		<version>0.10-SNAPSHOT</version>
+		<version>0.10</version>
 	</parent>
 
 	<dependencies>
