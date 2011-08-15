@@ -26,26 +26,42 @@ import static org.znerd.util.text.TextUtils.quote;
  */
 public class LesscMojo extends AbstractMojo {
 
+    /**
+     * @parameter alias="in" default-value="${basedir}/src/main/resources/less"
+     */
+    private File _sourceDir;
+
+    /**
+     * @parameter alias="out" default-value="${basedir}/target/css"
+     * @required
+     */
+    private File _targetDir;
+
+    /**
+     * @parameter name="command" default-value="lessc"
+     * @required
+     */
+    private String _command;
+
+    /**
+     * @parameter name="time-out" default-value="0"
+     */
+    private long _timeOut;
+
+    /**
+     * @parameter name="overwrite" default-value="false"
+     */
+    private boolean _overwrite;
+    
     @Override
     public void execute() throws MojoExecutionException {
         sendInternalLoggingThroughMaven();
-        generate();
-        // TODO: Add each generated file as a resource via MavenProject.addResource ?
+        checkSourceDirExists();
+        transform();
     }
 
     private void sendInternalLoggingThroughMaven() {
         Limb.setLogger(new MavenLimb(getLog()));
-    }
-
-    private void generate() throws MojoExecutionException {
-        checkSourceDirExists();
-        CommandRunner commandRunner = new CommonsExecCommandRunner(_timeOut);
-        String[] includedFiles = determineIncludedFiles();
-        try {
-            Lessc.compile(commandRunner, _sourceDir, includedFiles, _targetDir, _command, _overwrite);
-        } catch (IOException cause) {
-            throw new MojoExecutionException("Failed to perform transformation.", cause);
-        }
     }
 
     private void checkSourceDirExists() throws MojoExecutionException {
@@ -54,6 +70,20 @@ public class LesscMojo extends AbstractMojo {
         } catch (IOException cause) {
             throw new MojoExecutionException(cause.getMessage(), cause);
         }
+    }
+
+    private void transform() throws MojoExecutionException {
+        CommandRunner commandRunner = createCommandRunner();
+        String[] includedFiles = determineIncludedFiles();
+        try {
+            Lessc.compile(commandRunner, _sourceDir, includedFiles, _targetDir, _command, _overwrite);
+        } catch (IOException cause) {
+            throw new MojoExecutionException("Failed to perform transformation.", cause);
+        }
+    }
+
+    private CommonsExecCommandRunner createCommandRunner() {
+        return new CommonsExecCommandRunner(_timeOut);
     }
 
     private String[] determineIncludedFiles() {
@@ -82,31 +112,4 @@ public class LesscMojo extends AbstractMojo {
             return ! file.isDirectory();
         }
     }
-
-    /**
-     * @parameter alias="in" default-value="${basedir}/src/main/resources/less"
-     */
-    private File _sourceDir;
-
-    /**
-     * @parameter alias="out" default-value="${basedir}/target/css"
-     * @required
-     */
-    private File _targetDir;
-
-    /**
-     * @parameter name="command" default-value="lessc"
-     * @required
-     */
-    private String _command;
-
-    /**
-     * @parameter name="time-out" default-value="0"
-     */
-    private long _timeOut;
-
-    /**
-     * @parameter name="overwrite" default-value="false"
-     */
-    private boolean _overwrite;
 }
