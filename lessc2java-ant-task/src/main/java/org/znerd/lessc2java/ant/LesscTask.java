@@ -82,7 +82,7 @@ public final class LesscTask extends MatchingTask {
         File sourceDir = determineSourceDir();
         String[] includedFiles = getDirectoryScanner(sourceDir).getIncludedFiles();
         try {
-            Lessc.compile(commandRunner, sourceDir, includedFiles, _destDir, _command, _timeOut, _overwrite);
+            Lessc.compile(commandRunner, sourceDir, includedFiles, _destDir, _command, _overwrite);
         } catch (IOException cause) {
             throw new BuildException("Lessc processing failed", cause);
         }

@@ -8,7 +8,7 @@ import org.znerd.util.proc.CommandRunner;
 
 public final class Lessc {
 
-    public static void compile(CommandRunner commandRunner, File sourceDir, String[] includedFiles, File targetDir, String command, long timeOut, boolean overwrite) throws IOException {
+    public static void compile(CommandRunner commandRunner, File sourceDir, String[] includedFiles, File targetDir, String command, boolean overwrite) throws IOException {
         File actualTargetDir = determineTargetDir(sourceDir, targetDir);
         LesscExecutor executor = new LesscExecutor(commandRunner, sourceDir, includedFiles, actualTargetDir, command, overwrite);
         executor.execute();
