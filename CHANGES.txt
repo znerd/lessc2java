@@ -1,49 +1,54 @@
 ---- VERSION 0.9 (UNDER DEVELOPMENT) -----------------------------------------
 
+* Moved CommandRunner and associated classes to znerd-util.
+* Refactoring.
+* Added LesscMojo.
+* Added mvn-test-prj subdirectory (this is not a submodule).
+
 
 ---- VERSION 0.8 (August 12, 2011) -------------------------------------------
 
-- Updated to znerd-util 0.3, there is a severe bug in 0.2.
+* Updated to znerd-util 0.3, there is a severe bug in 0.2.
 
 
 ---- VERSION 0.7 (August 12, 2011) -------------------------------------------
 
-- Renamed project from lesscss-ant-task to lessc2java.
-- Migrating to Maven, for building this project.
-- Introduced separate JAR file for Core module.
-- Added a Maven plugin module (not implemented yet).
-- Refactored code and improved style.
-- Removed support for commands that do not accept the output file as the
+* Renamed project from lesscss-ant-task to lessc2java.
+* Migrating to Maven, for building this project.
+* Introduced separate JAR file for Core module.
+* Added a Maven plugin module (not implemented yet).
+* Refactored code and improved style.
+* Removed support for commands that do not accept the output file as the
   second parameter. If you have such a less compiler, please use a script as
   a frontend.
-- Renamed LICENSE.txt to COPYRIGHT.txt.
+* Renamed LICENSE.txt to COPYRIGHT.txt.
 
 
 ---- VERSION 0.6 (April 14, 2011) --------------------------------------------
 
-- Added parameter 'overwrite' for overwriting newer files.
+* Added parameter 'overwrite' for overwriting newer files.
 
 
 ---- VERSION 0.5 (September 9, 2009) -----------------------------------------
 
-- Added unit test.
-- Parameter 'includes' now works correctly.
+* Added unit test.
+* Parameter 'includes' now works correctly.
 
 
 ---- VERSION 0.4 (August 26, 2009) -------------------------------------------
 
-- Default source directory is project base directory.
+* Default source directory is project base directory.
 
 
 ---- VERSION 0.3 (August 26, 2009) -------------------------------------------
 
-- Supporting lessc 1.1.13 properly, by considering any stdout output to
+* Supporting lessc 1.1.13 properly, by considering any stdout output to
   indicate an error.
 
 
 ---- VERSION 0.2 (August 26, 2009) -------------------------------------------
 
-- Supporting lessc 1.1.13 without the need to change the command.rb file
+* Supporting lessc 1.1.13 without the need to change the command.rb file
   inside lessc. Detecting an error by looking at the stderr output.
   (Turned out this was not actually the case, since lessc sends errors to
   stdout instead of stderr).

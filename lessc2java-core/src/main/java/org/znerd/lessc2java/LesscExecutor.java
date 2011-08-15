@@ -4,10 +4,13 @@ package org.znerd.lessc2java;
 import java.io.File;
 import java.io.IOException;
 
+import static org.znerd.util.io.DirectoryUtils.checkDir;
 import static org.znerd.util.log.Limb.log;
 import static org.znerd.util.log.LogLevel.*;
+
+import org.znerd.util.proc.CommandRunResult;
+import org.znerd.util.proc.CommandRunner;
 import static org.znerd.util.text.TextUtils.isEmpty;
-import static org.znerd.util.io.CheckDirUtils.checkDir;
 
 class LesscExecutor {
 
