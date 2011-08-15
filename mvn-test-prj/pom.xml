@@ -7,7 +7,7 @@
 	<name>Lessc2java Maven Test</name>
 
 	<properties>
-		<lessc2java.version>0.9</lessc2java.version>
+		<lessc2java.version>0.10-SNAPSHOT</lessc2java.version>
 	</properties>
 
 	<dependencies>
