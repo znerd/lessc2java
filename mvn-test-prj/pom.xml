@@ -27,6 +27,7 @@
 				<executions>
 					<execution>
 						<configuration>
+							<in>${project.basedir}/src/less</in>
 							<out>${project.basedir}/j2ee-apps/frontend.ear/frontend.war/rsc/css/</out>
 						</configuration>
 						<phase>generate-resources</phase>
