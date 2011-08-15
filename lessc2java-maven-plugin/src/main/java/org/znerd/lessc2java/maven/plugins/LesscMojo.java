@@ -38,18 +38,18 @@ public class LesscMojo extends AbstractMojo {
     private File _targetDir;
 
     /**
-     * @parameter name="command" default-value="lessc"
+     * @parameter alias="command" default-value="lessc"
      * @required
      */
     private String _command;
 
     /**
-     * @parameter name="time-out" default-value="0"
+     * @parameter alias="time-out" default-value="0"
      */
     private long _timeOut;
 
     /**
-     * @parameter name="overwrite" default-value="false"
+     * @parameter alias="overwrite" default-value="false"
      */
     private boolean _overwrite;
     

@@ -42,7 +42,8 @@ class LesscExecutor {
 
     public void execute() throws IOException {
         checkDirs();
-        determineVersionAndProcessFiles();
+        logCommandVersion();
+        processFiles(_sourceDir, _targetDir);
     }
 
     private void checkDirs() throws IOException {
@@ -50,13 +51,14 @@ class LesscExecutor {
         checkDir("Destination directory", _targetDir, false, true, true);
     }
 
-    private void determineVersionAndProcessFiles() throws IOException {
-        determineCommandVersion();
-        processFiles(_sourceDir, _targetDir);
-    }
-
-    private void determineCommandVersion() throws IOException {
-        String output = executeVersionCommand();
+    private void logCommandVersion() {
+        String output;
+        try {
+            output = executeVersionCommand();
+        } catch (IOException cause) {
+            log(INFO, "Failed to determine command version.");
+            return;
+        }
         String version = parseVersionString(output);
         log(INFO, "Using command " + quote(_command) + ", version is " + quote(version) + '.');
     }
@@ -148,23 +150,26 @@ class LesscExecutor {
     }
 
     private FileTransformResult transform(String inFileName, long thisStart, String outFilePath, String inFilePath) {
-        CommandRunResult runResult = _commandRunner.runCommand(_command, inFilePath, outFilePath);
+        File workingDirectory = new File(inFilePath).getParentFile();
+        CommandRunResult runResult = _commandRunner.runCommand(workingDirectory, _command, inFilePath, outFilePath);
         long duration = System.currentTimeMillis() - thisStart;
         if (runResult.isSucceeded()) {
             logSucceededTransformation(inFileName, duration);
             return FileTransformResult.SUCCEEDED;
         } else {
-            logFailedTransformation(inFilePath, duration, runResult.getErrString());
+            logFailedTransformation(inFilePath, duration, runResult.getOutString(), runResult.getErrString());
             return FileTransformResult.FAILED;
         }
     }
 
-    private void logFailedTransformation(String inFilePath, long duration, String errorOutput) {
-        String logMessage = "Failed to transform " + quote(inFilePath) + " (took " + duration + " ms)";
-        if (isEmpty(errorOutput)) {
-            logMessage += '.';
+    private void logFailedTransformation(String inFilePath, long duration, String stdout, String stderr) {
+        String logMessage = "Failed to transform " + quote(inFilePath) + " (took " + duration + " ms). ";
+        if (!isEmpty(stderr)) {
+            logMessage += "Stderr output was received:" + System.getProperty("line.separator") + stderr;
+        } else if (!isEmpty(stdout)) {
+            logMessage += "No stderr output was received, but stdout was received:" + System.getProperty("line.separator") + stdout;
         } else {
-            logMessage += ':' + System.getProperty("line.separator") + errorOutput;
+            logMessage += "No output was received on either stderr or stdout.";
         }
         log(ERROR, logMessage);
     }

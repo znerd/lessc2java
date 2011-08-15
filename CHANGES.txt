@@ -1,3 +1,12 @@
+---- VERSION 0.11 (UNDER DEVELOPMENT) ----------------------------------------
+
+* Fixed: Some more parameters can be specified, by using @parameter alias.
+* Fixed: No longer failing when the command fails when run with "-v".
+* Refactoring / code style.
+* Setting the working directory to the .less file parent directory.
+* On an error, printing stdout if stderr is empty.
+
+
 ---- VERSION 0.10 (August 15, 2011) ------------------------------------------
 
 * Fixed: Parameters can be specified, by using @parameter alias.
