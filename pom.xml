@@ -34,4 +34,20 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>ArtifactoryRepository</id>
+      <name>Artifact Repository</name>
+      <url>${artifactory.plugins.release.url}</url>
+      <layout>default</layout>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>ArtifactoryRepository</id>
+      <name>Artifact Repository</name>
+      <url>${artifactory.plugins.snapshot.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
