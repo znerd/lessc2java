@@ -65,7 +65,7 @@ class LesscExecutor {
 
     private String executeVersionCommand() throws IOException {
         CommandRunResult runResult = _commandRunner.runCommand(_command, "-v");
-        IOException cause = runResult.getException();
+        Throwable cause = runResult.getException();
         if (cause != null) {
             throw new IOException("Failed to execute LessCSS command " + quote(_command) + '.', cause);
         }
@@ -73,7 +73,7 @@ class LesscExecutor {
         if (exitCode != 0) {
             throw new IOException("Failed to execute LessCSS command " + quote(_command) + " with the argument \"-v\". Received exit code " + exitCode + '.');
         }
-        return runResult.getOutString();
+        return runResult.getStdoutString();
     }
 
     private String parseVersionString(final String output) {
@@ -157,7 +157,7 @@ class LesscExecutor {
             logSucceededTransformation(inFileName, duration);
             return FileTransformResult.SUCCEEDED;
         } else {
-            logFailedTransformation(inFilePath, duration, runResult.getOutString(), runResult.getErrString());
+            logFailedTransformation(inFilePath, duration, runResult.getStdoutString(), runResult.getStderrString());
             return FileTransformResult.FAILED;
         }
     }
