@@ -4,7 +4,7 @@
   <artifactId>lessc2java</artifactId>
   <packaging>pom</packaging>
   <version>0.9-SNAPSHOT</version>
-  <name>Lessc2java Project</name>
+  <name>Lessc2java</name>
 
   <properties>
 		<maven.version>3.0.3</maven.version>
