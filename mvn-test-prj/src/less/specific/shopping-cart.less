@@ -1,0 +1,143 @@
+#shopping-cart { 
+    margin-bottom: 40px;
+    
+    .shopping-cart-group {
+        margin-top: 45px; 
+        
+        header {
+            background-color: #FFF;
+            color: @colour-text;
+            margin-bottom: 12px;
+            padding: 0;
+
+            .border-radius();
+            
+            h2 {
+                background: url("@{base-image-url}/icons/truck.png") no-repeat scroll left center transparent;
+                font-size: 110%;
+                float: left;
+                line-height: 30px;
+                margin-left: 15px;
+                padding-left: 25px;
+                
+                span {
+                    font-size: 80%;
+                    font-weight: normal;
+                    margin-left: 15px;
+                    text-transform: none;
+                }
+            }
+        }
+        
+        .shopping-cart-group-change-delivery-date {
+            float: right;
+        }
+        
+        .shopping-cart-group-items {
+            margin-bottom: 5px;
+            
+            td {
+                .messages {
+                    margin: 10px auto;
+                }
+            } 
+            
+            tfoot {
+                tr.summary {
+                    td {
+                        background-color: @colour-table-alternative-background;
+                        border-top: 1px solid @colour-border;
+                    }
+                }
+                
+                tr.reference {
+                    td {
+                        border-bottom: 0;
+                        
+                        dl {
+                            float: right;
+                        }
+                    }
+                }
+            }
+            
+            .item {
+                padding-left: 10px;
+                text-align: left;
+                width: 35%;
+            }
+            
+            .brand {
+                text-align: left;
+            }
+            
+            .item-number {
+                text-align: right;
+            }
+            
+            .delivery-date {
+                text-align: right;
+                width: 12%;
+            }
+            
+            .amount {
+                text-align: right;
+                width: 22%;
+            }
+            
+            .price {
+                text-align: right;
+            }
+            
+            .remove {
+                padding: 0;
+            }
+            
+            .shopping-cart-group-items-breakdown {
+                float: right;
+                text-align: right;
+                
+                dt {
+                    width: 120px;
+                }
+                
+                dd {
+                    width: 80px;
+                }
+            }
+        }
+
+        .shopping-cart-group-reference {
+            float: right;
+        }
+    }
+    
+    #shopping-cart-sort {
+        float: right;
+    }
+    
+    #shopping-cart-summary {
+        margin-top: 50px; 
+        
+        dl {
+            float: right;
+            text-align: right;
+            
+            dd {
+                width: 80px;
+            }
+            
+            dt {
+                width: 120px;
+            }
+        }  
+    }
+    
+    #widget-shopping-cart-controls {
+        padding: 0 10px;
+    }
+    
+    #widget-shopping-cart-remove-all {
+        float: right;
+    } 
+}

@@ -4,10 +4,13 @@ package org.znerd.lessc2java;
 import java.io.File;
 import java.io.IOException;
 
+import static org.znerd.util.io.DirectoryUtils.checkDir;
 import static org.znerd.util.log.Limb.log;
 import static org.znerd.util.log.LogLevel.*;
+
+import org.znerd.util.proc.CommandRunResult;
+import org.znerd.util.proc.CommandRunner;
 import static org.znerd.util.text.TextUtils.isEmpty;
-import static org.znerd.util.io.CheckDirUtils.checkDir;
 
 class LesscExecutor {
 
@@ -16,9 +19,8 @@ class LesscExecutor {
             throw new IllegalArgumentException(message);
         }
     }
-    
-    public LesscExecutor(CommandRunner commandRunner, File sourceDir, String[] includes, File targetDir, String command, boolean overwrite) {
 
+    public LesscExecutor(CommandRunner commandRunner, File sourceDir, String[] includes, File targetDir, String command, boolean overwrite) {
         illegalArgumentCheck(commandRunner == null, "commandRunner == null");
         illegalArgumentCheck(sourceDir == null, "sourceDir == null");
         illegalArgumentCheck(includes == null, "includes == null");
@@ -40,7 +42,8 @@ class LesscExecutor {
 
     public void execute() throws IOException {
         checkDirs();
-        determineVersionAndProcessFiles();
+        logCommandVersion();
+        processFiles(_sourceDir, _targetDir);
     }
 
     private void checkDirs() throws IOException {
@@ -48,20 +51,21 @@ class LesscExecutor {
         checkDir("Destination directory", _targetDir, false, true, true);
     }
 
-    private void determineVersionAndProcessFiles() throws IOException {
-        determineCommandVersion();
-        processFiles(_sourceDir, _targetDir);
-    }
-
-    private void determineCommandVersion() throws IOException {
-        String output = executeVersionCommand();
+    private void logCommandVersion() {
+        String output;
+        try {
+            output = executeVersionCommand();
+        } catch (IOException cause) {
+            log(INFO, "Failed to determine command version.");
+            return;
+        }
         String version = parseVersionString(output);
         log(INFO, "Using command " + quote(_command) + ", version is " + quote(version) + '.');
     }
 
     private String executeVersionCommand() throws IOException {
         CommandRunResult runResult = _commandRunner.runCommand(_command, "-v");
-        IOException cause = runResult.getException();
+        Throwable cause = runResult.getException();
         if (cause != null) {
             throw new IOException("Failed to execute LessCSS command " + quote(_command) + '.', cause);
         }
@@ -69,7 +73,7 @@ class LesscExecutor {
         if (exitCode != 0) {
             throw new IOException("Failed to execute LessCSS command " + quote(_command) + " with the argument \"-v\". Received exit code " + exitCode + '.');
         }
-        return runResult.getOutString();
+        return runResult.getStdoutString();
     }
 
     private String parseVersionString(final String output) {
@@ -146,23 +150,26 @@ class LesscExecutor {
     }
 
     private FileTransformResult transform(String inFileName, long thisStart, String outFilePath, String inFilePath) {
-        CommandRunResult runResult = _commandRunner.runCommand(_command, inFilePath, outFilePath);
+        File workingDirectory = new File(inFilePath).getParentFile();
+        CommandRunResult runResult = _commandRunner.runCommand(workingDirectory, _command, inFilePath, outFilePath);
         long duration = System.currentTimeMillis() - thisStart;
         if (runResult.isSucceeded()) {
             logSucceededTransformation(inFileName, duration);
             return FileTransformResult.SUCCEEDED;
         } else {
-            logFailedTransformation(inFilePath, duration, runResult.getErrString());
+            logFailedTransformation(inFilePath, duration, runResult.getStdoutString(), runResult.getStderrString());
             return FileTransformResult.FAILED;
         }
     }
 
-    private void logFailedTransformation(String inFilePath, long duration, String errorOutput) {
-        String logMessage = "Failed to transform " + quote(inFilePath) + " (took " + duration + " ms)";
-        if (isEmpty(errorOutput)) {
-            logMessage += '.';
+    private void logFailedTransformation(String inFilePath, long duration, String stdout, String stderr) {
+        String logMessage = "Failed to transform " + quote(inFilePath) + " (took " + duration + " ms). ";
+        if (!isEmpty(stderr)) {
+            logMessage += "Stderr output was received:" + System.getProperty("line.separator") + stderr;
+        } else if (!isEmpty(stdout)) {
+            logMessage += "No stderr output was received, but stdout was received:" + System.getProperty("line.separator") + stdout;
         } else {
-            logMessage += ':' + System.getProperty("line.separator") + errorOutput;
+            logMessage += "No output was received on either stderr or stdout.";
         }
         log(ERROR, logMessage);
     }

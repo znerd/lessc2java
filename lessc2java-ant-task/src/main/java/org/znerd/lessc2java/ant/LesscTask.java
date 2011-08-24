@@ -7,8 +7,9 @@ import java.io.IOException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.MatchingTask;
 
-import org.znerd.lessc2java.CommandRunner;
 import org.znerd.lessc2java.Lessc;
+import org.znerd.util.proc.AntCommandRunner;
+import org.znerd.util.proc.CommandRunner;
 
 /**
  * An Apache Ant task for running a LessCSS compiler on a number of files, to convert them from <code>.less</code>- to <code>.css</code>-format.
@@ -78,13 +79,24 @@ public final class LesscTask extends MatchingTask {
     @Override
     public void execute() throws BuildException {
         CommandRunner commandRunner = new AntCommandRunner(getProject(), _timeOut);
-        File baseDir = determineProjectBaseDir();
-        String[] includedFiles = getDirectoryScanner(_sourceDir).getIncludedFiles();
+        File sourceDir = determineSourceDir();
+        String[] includedFiles = getDirectoryScanner(sourceDir).getIncludedFiles();
         try {
-            Lessc.compile(commandRunner, baseDir, _sourceDir, includedFiles, _destDir, _command, _timeOut, _overwrite);
+            Lessc.compile(commandRunner, sourceDir, includedFiles, _destDir, _command, _overwrite);
         } catch (IOException cause) {
             throw new BuildException("Lessc processing failed", cause);
         }
+    }
+    
+    private File determineSourceDir() {
+        final File baseDir = determineProjectBaseDir();
+        File actualSourceDir;
+        if (_sourceDir == null) {
+            actualSourceDir = baseDir;
+        } else {
+            actualSourceDir = _sourceDir;
+        }
+        return actualSourceDir;
     }
 
     private File determineProjectBaseDir() {

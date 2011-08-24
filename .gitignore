@@ -2,3 +2,4 @@ target
 .classpath
 .project
 .settings
+mvn-test-prj/j2ee-apps/
