@@ -1,6 +1,8 @@
 // See the COPYRIGHT file for copyright and license information
 package org.znerd.lessc2java.maven.plugins;
 
+import static org.znerd.util.text.TextUtils.quote;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -15,8 +17,6 @@ import org.znerd.util.log.MavenLimb;
 import org.znerd.util.proc.CommandRunner;
 import org.znerd.util.proc.CommonsExecCommandRunner;
 import org.znerd.util.text.TextUtils;
-
-import static org.znerd.util.text.TextUtils.quote;
 
 /**
  * A Maven plugin for generating source files and/or documentation from Logdoc definitions.
@@ -53,8 +53,21 @@ public class LesscMojo extends AbstractMojo {
      */
     private boolean _overwrite;
     
+    /**
+     * @parameter alias="failOnError" default-value="true"
+     */
+    private boolean _failOnError;
+
     @Override
     public void execute() throws MojoExecutionException {
+        try {
+            executeImpl();
+        } catch (MojoExecutionException cause) {
+            handleExecutionException(cause);
+        }
+    }
+        
+    private void executeImpl() throws MojoExecutionException {
         sendInternalLoggingThroughMaven();
         checkSourceDirExists();
         transform();
@@ -91,6 +104,14 @@ public class LesscMojo extends AbstractMojo {
         return _sourceDir.list(filter);
     }
 
+    private void handleExecutionException(MojoExecutionException cause) throws MojoExecutionException {
+        if (_failOnError) {
+            throw cause;
+        } else {
+            Limb.log(LogLevel.WARNING, "Ignoring execution exception, since 'failOnError' is 'false'.", cause);
+        }
+    }
+
     class IncludeFilenameFilter implements FilenameFilter {
         @Override
         public boolean accept(File dir, String name) {
@@ -106,10 +127,10 @@ public class LesscMojo extends AbstractMojo {
         private boolean isFileNameMatch(String name) {
             return TextUtils.matches(name, "\\.less$") && TextUtils.matches(name, "^[^.]");
         }
-        
+
         private boolean isNotDirectory(File dir, String name) {
             File file = new File(dir, name);
-            return ! file.isDirectory();
+            return !file.isDirectory();
         }
     }
 }
