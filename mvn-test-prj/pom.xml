@@ -1,42 +1,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.znerd</groupId>
-	<artifactId>lessc2java-mvn-test-prj</artifactId>
-	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
-	<name>Lessc2java Maven Test</name>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.znerd</groupId>
+  <artifactId>lessc2java-mvn-test-prj</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <name>Lessc2java Maven Test</name>
 
-	<properties>
-		<lessc2java.version>0.11-SNAPSHOT</lessc2java.version>
-	</properties>
+  <properties>
+    <lessc2java.version>0.11-SNAPSHOT</lessc2java.version>
+  </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.znerd</groupId>
-			<artifactId>lessc2java-maven-plugin</artifactId>
-			<version>${lessc2java.version}</version>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.znerd</groupId>
+      <artifactId>lessc2java-maven-plugin</artifactId>
+      <version>${lessc2java.version}</version>
+    </dependency>
+  </dependencies>
 
     <build> 
-		<plugins>
-			<plugin>
-				<groupId>org.znerd</groupId>
-				<artifactId>lessc2java-maven-plugin</artifactId>
-				<version>${lessc2java.version}</version>
-				<executions>
-					<execution>
-						<configuration>
-							<in>${project.basedir}/src/less</in>
-							<out>${project.basedir}/j2ee-apps/frontend.ear/frontend.war/rsc/css/</out>
-						</configuration>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>css</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.znerd</groupId>
+        <artifactId>lessc2java-maven-plugin</artifactId>
+        <version>${lessc2java.version}</version>
+        <executions>
+          <execution>
+            <configuration>
+              <in>${project.basedir}/src/less</in>
+              <out>${project.basedir}/j2ee-apps/frontend.ear/frontend.war/rsc/css/</out>
+            </configuration>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>css</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
     </build> 
 </project>

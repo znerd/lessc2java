@@ -4,14 +4,15 @@
   <artifactId>lessc2java</artifactId>
   <packaging>pom</packaging>
   <version>0.11-SNAPSHOT</version>
+
   <name>Lessc2java Project</name>
 
   <properties>
-		<maven.version>3.0.3</maven.version>
-		<ant.version>1.8.2</ant.version>
-		<znerd-util.version>0.5-SNAPSHOT</znerd-util.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.version>3.0.3</maven.version>
+    <ant.version>1.8.2</ant.version>
+    <znerd-util.version>0.5-SNAPSHOT</znerd-util.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <modules>
