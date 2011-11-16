@@ -45,10 +45,17 @@ ANT EXAMPLE
 Example usage of the task in an Ant build file:
 
    <taskdef name="lesscss"
-       classname="org.znerd.lesscss.ant.LesscTask"
-       classpath="lib/lessc4java-ant-task.jar,lib/lessc4java-core.jar" />
+       resource="org/znerd/lessc2java/ant/antlib.xml">
+       <classpath>
+           <pathelement location="lib/lessc4java-ant-task.jar"/>
+           <pathelement location="lib/lessc4java-core.jar"/>
+           <pathelement location="lib/znerd-util.jar"/>
+       </classpath>
+   </taskdef>
 
    <lesscss dir="src/htdocs" todir="build/htdocs" />
+
+   Note: znerd-util can be found at https://github.com/znerd/znerd-util
 
 Although all parameters are optional, the task supports various:
 
