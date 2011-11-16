@@ -1,0 +1,5 @@
+<antlib>
+	<taskdef
+	name="lesscss"
+	classname="org.znerd.lessc2java.ant.LesscTask"/>
+</antlib>
