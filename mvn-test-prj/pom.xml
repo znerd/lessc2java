@@ -6,15 +6,11 @@
 	<version>0.1-SNAPSHOT</version>
 	<name>Lessc2java Maven Test</name>
 
-	<properties>
-		<lessc2java.version>0.11-SNAPSHOT</lessc2java.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.znerd</groupId>
 			<artifactId>lessc2java-maven-plugin</artifactId>
-			<version>${lessc2java.version}</version>
+			<version>0.11-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -23,7 +19,7 @@
 			<plugin>
 				<groupId>org.znerd</groupId>
 				<artifactId>lessc2java-maven-plugin</artifactId>
-				<version>${lessc2java.version}</version>
+				<version>0.11-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<configuration>
