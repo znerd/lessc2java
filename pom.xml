@@ -47,15 +47,15 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>ArtifactoryRepository</id>
-      <name>Artifact Repository</name>
-      <url>${artifactory.plugins.release.url}</url>
+      <name>Deli XL Artifact Repository</name>
+      <url>http://145.7.5.8/artifactory/plugins-release-local</url>
       <layout>default</layout>
     </repository>
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
       <id>ArtifactoryRepository</id>
-      <name>Artifact Repository</name>
-      <url>${artifactory.plugins.snapshot.url}</url>
+      <name>Deli XL Artifact Repository</name>
+      <url>http://145.7.5.8/artifactory/plugins-snapshot-local</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
