@@ -1,4 +1,4 @@
----- VERSION 0.11 (UNDER DEVELOPMENT) ----------------------------------------
+---- VERSION 0.11 (February 8, 2012) -----------------------------------------
 
 * Fixed: Some more parameters can be specified, by using @parameter alias.
 * Fixed: No longer failing when the command fails when run with "-v".
