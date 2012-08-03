@@ -4,12 +4,55 @@
   <artifactId>lessc2java</artifactId>
   <packaging>pom</packaging>
   <version>0.12-SNAPSHOT</version>
-  <name>Lessc2java</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+  <name>Lessc2java</name>
+  <description>Lessc2java; allows Java builds to convert LessCSS files to regular CSS files.</description>
+  <url>https://github.com/znerd/lessc2java</url>
+
+  <inceptionYear>2003</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>The BSD 2-Clause License</name>
+      <url>http://www.opensource.org/licenses/bsd-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <parent>
+    <groupId>org.znerd</groupId>
+    <artifactId>znerd-oss-parent</artifactId>
+    <version>2</version>
+  </parent>
+
+  <scm>
+    <connection>scm:git:git@github.com:znerd/lessc2java.git</connection>
+    <developerConnection>scm:git:git@github.com:znerd/lessc2java.git</developerConnection>
+    <url>git@github.com:znerd/lessc2java.git</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/znerd/lessc2java/issues</url>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <id>ernst</id>
+      <name>Ernst de Haan</name>
+      <email>ernst@ernstdehaan.com</email>
+      <url>http://ernstdehaan.com/</url>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>Europe/Amsterdam</timezone>
+      <properties>
+        <picUrl>http://ernstdehaan.com/ernst.jpg</picUrl>
+      </properties>
+    </developer>
+  </developers>
 
   <modules>
     <module>lessc2java-core</module>
@@ -22,7 +65,7 @@
       <dependency>
         <groupId>org.znerd</groupId>
         <artifactId>znerd-util</artifactId>
-        <version>0.8</version>
+        <version>0.7</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -36,20 +79,4 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>ArtifactoryRepository</id>
-      <name>Deli XL Artifact Repository</name>
-      <url>http://145.7.5.8/artifactory/plugins-release-local</url>
-      <layout>default</layout>
-    </repository>
-    <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>ArtifactoryRepository</id>
-      <name>Deli XL Artifact Repository</name>
-      <url>http://145.7.5.8/artifactory/plugins-snapshot-local</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
