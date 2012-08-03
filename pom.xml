@@ -7,7 +7,6 @@
   <name>Lessc2java</name>
 
   <properties>
-    <maven.version>3.0.3</maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -33,7 +32,7 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>

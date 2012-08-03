@@ -1,5 +1,7 @@
 ---- VERSION 0.12 (UNDER DEVELOPMENT) ----------------------------------------
+
 * Added support for 'failOnError' property.
+* Upgraded Maven Plugin API dependency from 3.0.3 -> 3.0.4.
 
 
 ---- VERSION 0.11 (February 8, 2012) -----------------------------------------
