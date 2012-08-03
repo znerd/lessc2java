@@ -1,11 +1,15 @@
----- VERSION 0.11 (UNDER DEVELOPMENT) ----------------------------------------
+---- VERSION 0.12 (UNDER DEVELOPMENT) ----------------------------------------
+* Added support for 'failOnError' property.
+
+
+---- VERSION 0.11 (February 8, 2012) -----------------------------------------
 
 * Fixed: Some more parameters can be specified, by using @parameter alias.
 * Fixed: No longer failing when the command fails when run with "-v".
 * Refactoring / code style.
 * Setting the working directory to the .less file parent directory.
 * On an error, printing stdout if stderr is empty.
-* Added support for 'failOnError' property.
+* Depending on znerd-util 0.6 now.
 
 
 ---- VERSION 0.10 (August 15, 2011) ------------------------------------------
