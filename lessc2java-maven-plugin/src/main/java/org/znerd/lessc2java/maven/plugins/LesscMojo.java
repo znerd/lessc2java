@@ -27,7 +27,7 @@ import org.znerd.util.text.TextUtils;
 public class LesscMojo extends AbstractMojo {
 
     /**
-     * @parameter alias="in" default-value="${basedir}/src/main/resources/less"
+     * @parameter alias="in" default-value="${basedir}/src/main/less"
      */
     private File _sourceDir;
 
@@ -52,7 +52,7 @@ public class LesscMojo extends AbstractMojo {
      * @parameter alias="overwrite" default-value="false"
      */
     private boolean _overwrite;
-    
+
     /**
      * @parameter alias="failOnError" default-value="true"
      */
@@ -66,7 +66,7 @@ public class LesscMojo extends AbstractMojo {
             handleExecutionException(cause);
         }
     }
-        
+
     private void executeImpl() throws MojoExecutionException {
         sendInternalLoggingThroughMaven();
         checkSourceDirExists();

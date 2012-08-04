@@ -1,7 +1,8 @@
 ---- VERSION 0.12 (UNDER DEVELOPMENT) ----------------------------------------
 
-* Readied project for distribution via Maven Central.
+* Default input path changed from src/main/resources/less to src/main/less.
 * Added support for 'failOnError' property.
+* Readied project for distribution via Maven Central.
 * Upgraded Maven Plugin API dependency from 3.0.3 -> 3.0.4.
 * Upgraded Apache Ant dependency from 1.8.2 -> 1.8.4.
 * Upgraded Znerd Util dependency from 0.6 -> 0.7.
