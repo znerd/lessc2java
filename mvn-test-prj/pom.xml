@@ -3,23 +3,23 @@
   <groupId>org.znerd</groupId>
   <artifactId>lessc2java-mvn-test-prj</artifactId>
   <packaging>jar</packaging>
-  <version>0.11</version>
+  <version>0.12-SNAPSHOT</version>
   <name>Lessc2java Maven Test</name>
 
   <dependencies>
     <dependency>
       <groupId>org.znerd</groupId>
       <artifactId>lessc2java-maven-plugin</artifactId>
-      <version>0.11</version>
+      <version>0.12-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
-    <build> 
+  <build> 
     <plugins>
       <plugin>
         <groupId>org.znerd</groupId>
         <artifactId>lessc2java-maven-plugin</artifactId>
-        <version>0.11</version>
+        <version>0.12-SNAPSHOT</version>
         <executions>
           <execution>
             <configuration>
@@ -34,5 +34,5 @@
         </executions>
       </plugin>
     </plugins>
-    </build> 
+  </build> 
 </project>
