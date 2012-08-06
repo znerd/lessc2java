@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.znerd</groupId>
     <artifactId>znerd-oss-parent</artifactId>
-    <version>2</version>
+    <version>3-SNAPSHOT</version>
   </parent>
 
   <scm>
