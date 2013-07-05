@@ -1,11 +1,20 @@
 ---- VERSION 0.12 (July 5, 2013) ---------------------------------------------
 
-* Default input path changed from src/main/resources/less to src/main/less.
+Improvements:
+* Ant task now logs command execution exceptions at DEBUG level.
 * Added support for 'failOnError' property.
-* Readied project for distribution via Maven Central.
+
+Bug fixes:
+* Ant task now logs via Ant logger.
+
+Dependency changes:
 * Upgraded Maven Plugin API dependency from 3.0.3 -> 3.0.4.
 * Upgraded Apache Ant dependency from 1.8.2 -> 1.8.4.
 * Upgraded Znerd Util dependency from 0.6 -> 0.10.
+
+Other changes:
+* Default input path changed from src/main/resources/less to src/main/less.
+* Readied project for distribution via Maven Central.
 
 
 ---- VERSION 0.11 (February 8, 2012) -----------------------------------------

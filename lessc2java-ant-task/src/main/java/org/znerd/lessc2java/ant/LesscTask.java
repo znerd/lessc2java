@@ -6,8 +6,9 @@ import java.io.IOException;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.MatchingTask;
-
 import org.znerd.lessc2java.Lessc;
+import org.znerd.util.log.AntLimb;
+import org.znerd.util.log.Limb;
 import org.znerd.util.proc.AntCommandRunner;
 import org.znerd.util.proc.CommandRunner;
 
@@ -78,6 +79,7 @@ public final class LesscTask extends MatchingTask {
 
     @Override
     public void execute() throws BuildException {
+    	Limb.setLogger(new AntLimb(this));
         CommandRunner commandRunner = new AntCommandRunner(getProject(), _timeOut);
         File sourceDir = determineSourceDir();
         String[] includedFiles = getDirectoryScanner(sourceDir).getIncludedFiles();
