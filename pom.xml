@@ -3,7 +3,7 @@
   <groupId>org.znerd</groupId>
   <artifactId>lessc2java</artifactId>
   <packaging>pom</packaging>
-  <version>0.13</version>
+  <version>0.14-SNAPSHOT</version>
 
   <name>Lessc2java</name>
   <description>Lessc2java; allows Java builds to convert LessCSS files to regular CSS files.</description>
@@ -29,7 +29,7 @@
     <connection>scm:git:git@github.com:znerd/lessc2java.git</connection>
     <developerConnection>scm:git:git@github.com:znerd/lessc2java.git</developerConnection>
     <url>git@github.com:znerd/lessc2java.git</url>
-    <tag>lessc2java-0.13</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
