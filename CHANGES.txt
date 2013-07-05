@@ -9,7 +9,7 @@ Bug fixes:
 
 Dependency changes:
 * Upgraded Maven Plugin API dependency from 3.0.3 -> 3.0.4.
-* Upgraded Apache Ant dependency from 1.8.2 -> 1.8.4.
+* Upgraded Apache Ant dependency from 1.8.2 -> 1.9.1.
 * Upgraded Znerd Util dependency from 0.6 -> 0.10.
 
 Other changes:
