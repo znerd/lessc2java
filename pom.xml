@@ -65,7 +65,7 @@
       <dependency>
         <groupId>org.znerd</groupId>
         <artifactId>znerd-util</artifactId>
-        <version>0.7</version>
+        <version>0.10</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
