@@ -55,8 +55,13 @@ class LesscExecutor {
         String output;
         try {
             output = executeVersionCommand();
-        } catch (IOException cause) {
+        } catch (IOException ioException) {
             log(INFO, "Failed to determine command version.");
+            Throwable cause = ioException;
+            while (cause != null) {
+                log(DEBUG, "- Cause: " + cause.getClass().getName() + " with message " + quote(cause.getMessage()) + '.');
+                cause = cause.getCause();
+            }
             return;
         }
         String version = parseVersionString(output);

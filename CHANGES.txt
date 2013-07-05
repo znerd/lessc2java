@@ -1,7 +1,7 @@
 ---- VERSION 0.12 (July 5, 2013) ---------------------------------------------
 
 Improvements:
-* Ant task now logs command execution exceptions at DEBUG level.
+* Now logging command execution exceptions at DEBUG level.
 * Added support for 'failOnError' property.
 
 Bug fixes:
